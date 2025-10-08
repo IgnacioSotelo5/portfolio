@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('../fonts/Satoshi-Variable.woff2') format('woff2'),
+       url('../fonts/Satoshi-Variable.woff') format('woff');
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Manrope';
+  src: url('../fonts/Manrope-Variable.woff2') format('woff2'),
+       url('../fonts/Manrope-Variable.woff') format('woff');
+  font-weight: 200 800;
+  font-display: swap;
+  font-style: normal;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-satoshi: 'Satoshi', sans-serif;
+    --font-manrope: 'Manrope', sans-serif;
+
+	--color-surface-main: #fafafa;        /* Main page background */
+	--color-surface-card: #ffffff;        /* Cards, modals, elevated surfaces */
+	--color-surface-elevated: #f8f9fa;    /* Hover states, subtle elevation */
+	--color-surface-code: #f6f8fa;        /* Code blocks, pre tags */
+
+	--color-typography-main: #1a1a1a;           /* Main headings, body text */
+	--color-typography-secondary: #5e5d9a;      /* Subtitles, captions, meta info */
+	--color-typography-muted: #7a7a8c;          /* Placeholders, disabled text */
+	--color-typography-inverse: #ffffff;        /* Text on dark backgrounds */
+
+	--color-action-primary: #007aff;      /* Main CTAs, links, primary buttons */
+	--color-action-secondary: #5856d6;    /* Secondary buttons, badges */
+	--color-action-accent: #af52de;       /* Highlights, special elements */
+
+	--color-state-warning: #ffc107;       /* Alerts, warnings, pending states */
+	--color-state-error: #dc3545;         /* Errors, validation, destructive actions */
+	--color-state-info: #17a2b8;          /* Info messages, tooltips */
+
+	--color-code-purple: #6f42c1;         /* Code syntax, tech elements */
+	--color-notification-orange: #fd7e14; /* Notifications, featured items */
+	--color-highlight-pink: #e83e8c;      /* Creative elements, highlights */
+	--color-success-cyan: #20c997;        /* Success states, completed items */
+
+	--color-edge: #e1e4e8;              /* Input borders, card outlines */
+	--color-divider: #d1d5db;            /* Section separators, HR lines */
+}
+
+.dark {
+    --color-surface-main: #0d1117;        /* Main page background */
+    --color-surface-card: #161b22;        /* Cards, modals, elevated surfaces */
+    --color-surface-elevated: #21262d;    /* Hover states, subtle elevation */
+    --color-surface-code: #1c2128;        /* Code blocks, pre tags */
+
+    --color-typography-main: #e0e2f0;           /* Main headings, body text */
+    --color-typography-secondary: #a9a9bf;      /* Subtitles, captions, meta info */
+    --color-typography-muted: #6c7a93;          /* Placeholders, disabled text */
+    --color-typography-inverse: #0d1117;        /* Text on light backgrounds */
+
+    --color-action-primary: #58a6ff;      /* Main CTAs, links, primary buttons */
+    --color-action-secondary: #a5a5ff;    /* Secondary buttons, badges */
+    --color-action-accent: #d2a8ff;       /* Highlights, special elements */
+
+    --color-state-warning: #d29922;       /* Alerts, warnings, pending states */
+    --color-state-error: #f85149;         /* Errors, validation, destructive actions */
+    --color-state-info: #58a6ff;          /* Info messages, tooltips */
+
+    --color-code-purple: #bc8cff;         /* Code syntax, tech elements */
+    --color-notification-orange: #ff8c42; /* Notifications, featured items */
+    --color-highlight-pink: #ff6bcb;      /* Creative elements, highlights */
+    --color-success-cyan: #39c5cf;        /* Success states, completed items */
+
+    --color-edge: #30363d;              /* Input borders, card outlines */
+    --color-divider: #373e47;             /* Section separators, HR lines */
+	
+    
+}
+
+@layer base {
+
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+	body{
+        font-family: var(--font-manrope);
+        background-position: top;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-color: var(--color-surface-main);
+        width: 100%;
+        min-height: 100dvh;
+		overflow-x: hidden;
+		overflow-y: auto;
+	}
+
+    body.landing.light{
+        background-image: radial-gradient(circle 700px at 50% -25%,#5856d67a, #5856d65a,#0307120d);
+    }
+    
+    body.landing.dark{
+        background-image: radial-gradient(80% 80% at 50% -20%,hsla(241, 41%, 62%, 0.3),var(--color-surface-main));
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: var(--font-satoshi);
+    }
+}
+
+@layer utilities {
+
+    .landing .animate-header{
+        animation: header-animation 1s linear both;
+        animation-timeline: scroll();
+        animation-range: 0 100px;
+        background-color: transparent;
+    }
+
+    .docs > header {
+        background-color: var(--color-surface-main);
+        border-bottom: 1px solid var(--color-edge);
+    }
+
+    .btn-bg-gradient {
+        background: radial-gradient(141.42% 141.42% at 100% 0%,#f0f0ff08,#fff0),radial-gradient(140.35% 140.35% at 100% 94.74%,var(--color-code-purple),#bd34fe00),radial-gradient(89.94% 89.94% at 18.42% 15.79%,var(--color-action-primary),#41d1ff00);
+    }
+
+    @keyframes header-animation {
+        100% {
+            box-shadow: 0 5px 50px -5px #5856d954,
+            0 0 1px var(--color-action-secondary);
+            background: #0f0f0f04;
+            backdrop-filter: blur(10px);
+            padding-block: 0;
+            border-bottom: 0px solid transparent;
+        }
+    }
+}
+
+@layer components {
+
+    .btn {
+        @apply inline-flex items-center justify-center px-4 py-2 gap-2 rounded-lg font-bold text-base font-satoshi text-typography-main;
+    }
+
+    .btn-social {
+        @apply gap-1.5 border border-divider hover:bg-surface-elevated/50 text-typography-secondary dark:hover:text-typography-main
+    }
+
+    .btn-cta{
+        @apply bg-action-primary hover:bg-action-primary/80 font-semibold
+    }
+}

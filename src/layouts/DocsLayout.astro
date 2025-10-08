@@ -1,0 +1,15 @@
+---
+import Layout from "./Layout.astro";
+
+
+---
+<Layout context="docs">
+    <div class="mt-16 h-screen w-full absolute">
+        <div class="fixed top-16 left-0 h-[calc(100vh_-_4rem)] w-64 border-r border-edge bg-surface/50 overflow-y-auto">
+            sidebar
+        </div>
+        <div class="ml-64 p-8 pt-10 h-[calc(100vh_-_4rem)] overflow-y-auto">
+            <slot />
+        </div>
+    </div>
+</Layout>

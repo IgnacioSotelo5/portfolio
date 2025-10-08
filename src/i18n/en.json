@@ -1,0 +1,24 @@
+{
+    "title": "Ignacio Sotelo - Portfolio",
+    "description": "Ignacio Sotelo's portfolio: Fullstack Developer. Web projects and software skills at a glance.",
+    "lang": {
+        "en": "English",
+        "es": "Español"
+    },
+    "landing": {
+        "title": "Ignacio Sotelo",
+        "subtitle": "Fullstack Developer",
+        "tagline": "A playground for modern web experiences with React, Node.js & TypeScript.",
+        "subTagline": "Dive into projects, code and ideas.",
+        "cta": "Get started",
+        "proyectsSection": {
+            "title": "Featured projects",
+            "proyectsCardCTA": "Source code"
+        }
+    },
+    "theme": {
+        "system": "System",
+        "light": "Light",
+        "dark": "Dark"
+    }
+}

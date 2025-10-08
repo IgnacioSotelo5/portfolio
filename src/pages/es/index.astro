@@ -1,9 +1,11 @@
 ---
-import Layout from '../layouts/Layout.astro';
 import { ArrowUpRight, Github } from '@lucide/astro'
 import { getCollection } from 'astro:content';
-import { useLocale } from '../i18n/context';
-import { t } from '../i18n';
+import { useLocale } from '../../i18n/context';
+import Layout from '../../layouts/Layout.astro';
+import { t } from '../../i18n';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
 
 const colSpanClasses = [
 	'col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-3',
@@ -34,7 +36,7 @@ const lang = useLocale(Astro)
 				</p>
 			</div>
 			<div class="flex items-center gap-4">		
-				<a class="btn btn-bg-gradient hover:bg-surface-elevated text-white shadow-[0_1px_#fffa_inset] hover:shadow-none hover:-translate-y-0.5 transition-all duration-75 ease-in" href="/docs">{t(lang, 'landing.cta')}</a>
+				<a class="btn btn-bg-gradient hover:bg-surface-elevated text-white shadow-[0_1px_#fffa_inset] hover:shadow-none hover:-translate-y-0.5 transition-all duration-75 ease-in" href={getRelativeLocaleUrl('es','docs')}>{t(lang, 'landing.cta')}</a>
 				<a class="btn btn-social" target="_blank" href="https://github.com/IgnacioSotelo5">
 					<Github size={18} />
 					<span>Github</span>
@@ -55,7 +57,7 @@ const lang = useLocale(Astro)
 												alt={data.title ?? "Project preview"} 
 												class="lg:absolute lg:inset-0 md:w-auto lg:w-full lg:h-full md:h-auto rounded-b-none md:rounded-b-md rounded-md transition-all duration-700 ease-out aspect-[4/3]"
 											/>
-											<div class="hidden lg:absolute lg:flex gap-4 bg-black/20 dark:bg-black/40 inset-0 transition-all duration-300 ease-in group-hover:bg-transparent items-center justify-center rounded-md">
+											<div class="absolute hidden lg:flex gap-4 bg-black/20 dark:bg-black/40 inset-0 transition-all duration-300 ease-in group-hover:bg-transparent items-center justify-center rounded-md">
 												{
 													data.demo ? (
 													<a href={data.demo} target="_blank" class="text-typography-inverse dark:text-typography-main invisible group-hover:visible bg-slate-900/80 px-2 py-1 text-sm font-semibold outline-1 -outline-offset-2 outline-slate-200/25  rounded-xl flex items-center gap-2">

@@ -1,0 +1,15 @@
+{
+    "title": "Ignacio Sotelo - Portfolio",
+    "description": "Portafolio de Ignacio Sotelo, Fullstack Developer. Proyectos web y habilidades de software en un vistazo.",
+    "landing": {
+        "title": "Ignacio Sotelo",
+        "subtitle": "Desarrollador de Software Full Stack",
+        "tagline": "Un entorno creativo para construir experiencias web modernas con React, Node.js y TypeScript.",
+        "subTagline": "Sumérgete en proyectos, código e ideas.",
+        "cta": "Comenzar",
+        "proyectsSection": {
+            "title": "Proyectos destacados",
+            "proyectsCardCTA": "Código fuente"
+        }
+    }
+}

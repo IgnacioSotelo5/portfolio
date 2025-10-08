@@ -1,0 +1,51 @@
+---
+import { ArrowUpRight } from '@lucide/astro';
+import { useLocale } from '../i18n/context';
+
+const lang = useLocale(Astro)
+
+const currentPath = Astro.url.pathname.split('/')[1]
+
+const availableLangs = {
+    en: {
+        name: 'English',
+        href: lang === 'en' ? undefined : `/${currentPath.replace('es', '')}`
+    },
+    es: {
+        name: 'Español',
+        href: lang === 'es' ? undefined : `/es/${currentPath}`
+    }
+}
+
+---
+<div data-lang-dropdown class="group absolute top-[calc(4rem_/_2_+_20px)] bg-surface-card border border-edge px-3 py-2 rounded-md group-hover:flex hidden flex-col gap-y-1 text-sm">
+    {
+        Object.entries(availableLangs).sort(([keyA], [keyB]) => {
+            if(keyA === lang) return -1
+            if(keyB === lang) return 1
+            return 0
+        }).map(([key, { name, href }]) => {
+            if(lang === key) {
+                return (
+                    <span aria-current="true" class="flex items-center gap-x-1 px-2 py-1 font-bold">
+                        {name}
+                    </span>
+                )
+            }
+            return (
+                <a class="flex items-center gap-x-1 px-2 py-1 hover:bg-surface-elevated rounded-sm hover:text-action-secondary" href={href}>
+                    {name}
+                    <ArrowUpRight size={14} />
+                </a>
+            )
+        })
+    }
+</div>
+<!-- <a class="flex items-center gap-x-1 px-2 py-1 hover:bg-surface-elevated rounded-sm hover:text-action-secondary" >
+    English
+    <ArrowUpRight size={14} />
+</a>
+<a class="flex items-center gap-x-1 px-2 py-1 hover:bg-surface-elevated rounded-sm hover:text-action-secondary" href={lang === 'es' ? undefined : `/es/${currentPath}`}>
+    Español
+    <ArrowUpRight size={14} />
+</a> -->
