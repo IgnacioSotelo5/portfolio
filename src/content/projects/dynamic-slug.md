@@ -1,12 +1,25 @@
 ---
 title: "Dynamic Slug Link Shortener"
 description: "Monorepo link shortener with QR code support, analytics, and user authentication. Built with NestJS, React, and MySQL."
+shortDescription: "Monorepo link shortener with QR code support, analytics, and user authentication. Built with NestJS, React, and MySQL."
 tech: ["NestJS", "React", "TypeScript", "MySQL", "Chart.js", "Tailwind CSS"]
+repositories:
+  - name: "Monorepo"
+    url: "https://github.com/IgnacioSotelo5/dynamic-slug"
+    type: "fullstack"
+  - name: "Frontend"
+    url: "https://github.com/IgnacioSotelo5/dynamic-slug/tree/main/ui"
+    type: "frontend"
+  - name: "Backend"
+    url: "https://github.com/IgnacioSotelo5/dynamic-slug/tree/main/backend"
+    type: "backend"
 featured: true
 date: "2024-05-10"
-github: "https://github.com/IgnacioSotelo5/dynamic-slug"
-demo: null
 image: "/images/projects/dynamic-slug/preview.webp"
+category: "web"
+status: "completed"
+priority: 8
+tags: ["link-shortener", "qr-code", "analytics", "authentication", "monorepo", "nestjs", "react", "mysql", "tailwindcss"]
 ---
 
 # Dynamic Slug Link Shortener

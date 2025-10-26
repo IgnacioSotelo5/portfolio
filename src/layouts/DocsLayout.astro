@@ -1,15 +1,117 @@
 ---
 import Layout from "./Layout.astro";
 
+type SidebarLink = {
+  pageLink: { href: string, label: string }
+}
+
+const sidebarLinks: Record<string, { title: string, links: Record<string, SidebarLink> }> = {
+  overview: {
+    title: 'Overview',
+    links: {
+      introduction: {
+        pageLink: { href: '/docs/introduction', label: 'Introduction' }
+      }
+    },
+  },
+  work: {
+    title: 'Work',
+    links: {
+      projects: {
+        pageLink: { href: '/docs/projects', label: 'Projects' }
+      }
+    }
+  },
+  background: {
+    title: 'Background',
+    links: {
+      education: {
+        pageLink: { href: '/docs/education', label: 'Education' }
+      },
+      skills: {
+        pageLink: { href: '/docs/skills', label: 'Skills' }
+      }
+    }
+  },
+  resources: {
+    title: 'Resources',
+    links: {
+      changelog: {
+        pageLink: { href: '/docs/changelog', label: 'Changelog' }
+      }
+    }
+  },
+  connect: {
+    title: 'Connect',
+    links: {
+      contact: {
+        pageLink: { href: '/docs/contact', label: 'Contact' }
+      }
+    }
+  }
+}
+
+
+const isProjectsPage = Astro.url.pathname.includes('projects')
 
 ---
 <Layout context="docs">
-    <div class="mt-16 h-screen w-full absolute">
-        <div class="fixed top-16 left-0 h-[calc(100vh_-_4rem)] w-64 border-r border-edge bg-surface/50 overflow-y-auto">
-            sidebar
+    <div class="mt-16 min-h-dvh w-full absolute grid grid-cols-[16rem_2.5rem_minmax(0,1fr)]">
+        <div class="col-start-1 h-full border-r border-edge bg-surface/50 overflow-y-hidden">
+            <div role="navigation" transition:persist class="flex flex-col fixed gap-2 p-4 items-center py-6 px-8">
+                <ul class="flex flex-col gap-2">
+                  {
+                    Object.entries(sidebarLinks).map(([_, {links, title}]) => (
+                      <>
+                      <div class="font-semibold text-sm tracking-wider">{title}</div>
+                      <div class="flex flex-col w-full text-sm">
+                          {
+                            Object.entries(links).map(([_, {pageLink}]) => (
+                              <li class="flex text-typography-secondary hover:text-typography-main border-l border-edge pl-4 py-1 hover:border-action-accent hover:border-l-2">
+                                <a href={pageLink.href}>{pageLink.label}</a>
+                              </li>
+                            ))
+                          }
+                      </div>
+                      </>
+                    ))
+                  }
+                </ul>
+            </div>
         </div>
-        <div class="ml-64 p-8 pt-10 h-[calc(100vh_-_4rem)] overflow-y-auto">
+        <div class="col-start-2 bg-surface-elevated"></div>
+        <div transition:name="docsContent" class="flex col-start-3 p-10">
+          <div class={`overflow-y-auto flex-1 ${!isProjectsPage ? 'pl-40' : 'px-10'}`}>
             <slot />
+          </div>
+          {
+            Astro.slots.toc && (
+              <div class="w-64">
+                <div class="sticky top-28">
+                  <slot name="toc" />
+                </div>
+              </div>
+            )
+          }
         </div>
     </div>
 </Layout>
+<script>
+  function highlightSidebarItem() {
+    const sidebar = document.querySelector('div[role="navigation"]')
+    const sidebarLinks = sidebar?.querySelectorAll('a')
+    const currentSection = window.location.pathname.split('/').pop()
+    
+    sidebarLinks?.forEach(link => {
+      const li = link.parentElement
+      link.classList.remove('text-action-accent', 'font-semibold')
+      li?.classList.remove('border-action-accent', 'border-l-2', 'border-action-accent', 'border-edge')
+      if (link.textContent?.toLowerCase() === currentSection) {
+        link.classList.add('text-action-accent', 'font-semibold')
+        li?.classList.add('border-action-accent', 'border-l-2', 'border-action-accent')
+      }
+    })
+  }
+  
+  document.addEventListener('astro:page-load', highlightSidebarItem)
+</script>

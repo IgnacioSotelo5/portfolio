@@ -1,0 +1,104 @@
+---
+export interface Props {
+  headings: { href: string; label: string }[];
+}
+
+const { headings } = Astro.props;
+---
+
+{headings.length > 0 && (
+  <div id="internal-nav">
+    <h2 class="text-sm font-semibold tracking-wider mb-4 text-typography-main">On this page</h2>
+    <ul class="flex flex-col gap-2 text-sm border-l-2 border-edge">
+      {headings.map(({ href, label }) => (
+        <li id={`section-link-${href.replace('#', '')}`} class="pl-4">
+          <a 
+            href={href} 
+            class="text-typography-secondary hover:text-typography-main transition-colors duration-200"
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
+<script>
+const intersectingEntries = new Map<string, number>()
+let headingOrder: string[] = []
+
+const callback: IntersectionObserverCallback = (entries) => {
+  entries.forEach((entry) => {
+    const targetId = entry.target.id
+
+    if(entry.isIntersecting) {
+      const headingIndex = headingOrder.indexOf(targetId)
+      intersectingEntries.set(targetId, headingIndex)
+    } else {
+      intersectingEntries.delete(targetId)
+    }
+    
+    document.querySelectorAll('#internal-nav a').forEach(link => {
+      link.classList.remove('text-action-accent')
+      link.classList.add('text-typography-secondary')
+    })
+
+    let activeHeadingId: string | null = null
+
+    if(intersectingEntries.size > 0) {
+      const sortedEntries = Array.from(intersectingEntries.entries()).sort(([, indexA], [, indexB]) => indexA - indexB)
+      const activeHeadingId = sortedEntries[0][0]
+      const link = document.querySelector(`#section-link-${activeHeadingId} > a`)
+      if(link) {
+        link.classList.remove('text-typography-secondary')
+        link.classList.add('text-action-accent')
+      }
+    } else {
+      const headings = Array.from(document.querySelectorAll('h2[id]'))
+      let closestHeading: HTMLElement | null = null;
+      let closestDistance = Infinity;
+
+      headings.forEach((heading) => {
+        const rect = heading.getBoundingClientRect()
+        const distance = Math.abs(rect.top - 64)
+
+        if(rect.top <= 64 && distance < closestDistance) {
+          closestDistance = distance
+          closestHeading = heading as HTMLElement
+        }
+      })
+
+      if(closestHeading) {
+        activeHeadingId = (closestHeading as HTMLElement).id
+      }
+      
+    }
+      if(activeHeadingId) {
+        const link = document.querySelector(`#section-link-${activeHeadingId} > a`)
+        if(link) {
+          link.classList.remove('text-typography-secondary')
+          link.classList.add('text-action-accent')
+        }
+      }
+
+  })
+
+}
+const options: IntersectionObserverInit = {
+  threshold: 0.25,
+  rootMargin: '-64px 0px -80% 0px'
+}
+
+const observer = new IntersectionObserver(callback, options)
+
+document.addEventListener('astro:page-load', () => {
+  const headings = document.querySelectorAll('h2[id]')
+  headingOrder = Array.from(headings).map(h => h.id)
+  
+  headings.forEach((heading) => {
+    observer.observe(heading)
+  })
+})
+
+</script>

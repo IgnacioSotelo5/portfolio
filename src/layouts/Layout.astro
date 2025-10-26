@@ -1,9 +1,14 @@
 ---
-import { ChevronDown, ChevronRight, Languages, Monitor, Moon, Sun } from '@lucide/astro';
+import ChevronDown from '~/icons/chevron-down';
+import Languages from '~/icons/languages';
+import Monitor from '~/icons/monitor';
+import Moon from '~/icons/moon';
+import Sun from '~/icons/sun';
 import '../styles/global.css'
 import { t } from '../i18n';
 import { useLocale } from '../i18n/context';
-import LanguagePicker from '../components/LanguagePicker.astro';
+import LanguagePicker from '@/components/LanguagePicker.astro';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
 	title?: string;
@@ -23,6 +28,73 @@ const lang = useLocale(Astro)
 		<meta name="generator" content={Astro.generator} />
 		<title>{t(lang, 'title')}</title>
 		<meta name="description" content={t(lang, 'description')}>
+		<meta name="author" content="Ignacio Sotelo" />
+		<meta name="keywords" content="Portfolio, Developer, Software Engineer, Web Developer, Fullstack, Frontend, Backend, JavaScript, TypeScript, React, Node.js, Astro" />
+		<ClientRouter />
+		<script>
+			const userPref = localStorage.getItem('theme-preference')
+			const systemPref = window.matchMedia('(prefers-color-scheme: dark')
+			
+			// Usamos targetElement para en transiciones aplicar el tema al body del nuevo documento.
+			const applyTheme = (theme: string, targetElement = document.body) => {
+				
+				targetElement.classList.remove('light', 'dark', 'system')
+				if(theme === 'dark'){
+					targetElement.classList.add('dark')
+				} else if(theme === 'system') {
+					if(systemPref.matches) {
+						targetElement.classList.add('dark')
+					} else {
+						targetElement.classList.add('light')
+					}
+				} else {
+					targetElement.classList.add('light')
+				}
+			}
+
+			
+			const attachPickers = () => {
+				const themePicker = document.getElementById('themePicker');
+				if(!themePicker) return
+				const userPref = localStorage.getItem('theme-preference') || 'system'
+				const allPickers = themePicker.querySelectorAll('[data-theme]')
+				allPickers.forEach(picker => {
+					if((picker as HTMLElement)?.dataset?.theme === userPref) {
+						picker.setAttribute('aria-selected', 'true')
+					} else {
+						picker.removeAttribute('aria-selected')
+					}
+				})
+				
+				themePicker.addEventListener('click', (e) => {
+					const picker = (e.target as HTMLElement)?.closest?.('[data-theme]') as HTMLElement | null
+					if(!picker) return
+
+					const theme = picker?.dataset?.theme
+					if(!theme) return
+
+					localStorage.setItem('theme-preference', theme)
+
+					allPickers.forEach(p => p.removeAttribute('aria-selected'))
+					picker.setAttribute('aria-selected', 'true')
+
+					applyTheme(theme)
+				})
+			}
+			
+			applyTheme(userPref || 'system')
+			attachPickers()
+			
+			// Asegurar que el tema se aplica en transiciones, porque ClientRouter reemplaza el HTML antes de aplicar las clases.
+			document.addEventListener('astro:before-swap', (ev) => {
+				const theme = localStorage.getItem('theme-preference') || 'system'
+				applyTheme(theme, ev.newDocument.body)
+			})
+
+			document.addEventListener('astro:page-load', () => {
+				attachPickers()
+			})
+		</script>
 	</head>
 	<body class={`text-typography-main ${context}`}>
 		<header class="w-full h-16 fixed top-0 z-50 flex animate-header px-12">
@@ -75,46 +147,3 @@ const lang = useLocale(Astro)
 		<slot />
 	</body>
 </html>
-<script>
-	// const themePicker = document.getElementById('themePicker');
-	const userPref = localStorage.getItem('theme-preference')
-	const systemPref = window.matchMedia('(prefers-color-scheme: dark')
-	const themePickers = document.querySelectorAll('[data-theme]')
-	
-
-	const applyTheme = (theme) => {
-
-		document.body.classList.remove('light', 'dark', 'system')
-		if(theme === 'dark'){
-			document.body.classList.add('dark')
-		} else if(theme === 'system') {
-			if(systemPref.matches) {
-				document.body.classList.add('dark')
-			} else {
-				document.body.classList.add('light')
-			}
-		} else {
-			document.body.classList.add('light')
-		}
-	}
-
-	applyTheme(userPref || 'system')
-
-	themePickers.forEach(picker => {
-		const theme = (picker as HTMLElement)?.dataset?.theme
-		if(theme === (userPref || 'system')) {
-			picker.setAttribute('aria-selected', 'true')
-		} else {
-			picker.removeAttribute('aria-selected')
-		}
-	})
-
-	themePickers.forEach(picker => picker?.addEventListener('click', (e) => {
-		const theme = (picker as HTMLElement)?.dataset?.theme
-		if(!theme) return
-		localStorage.setItem('theme-preference', theme)
-		themePickers.forEach(p => p.removeAttribute('aria-selected'))
-		picker.setAttribute('aria-selected', 'true')
-		applyTheme(theme)
-	}))
-</script>

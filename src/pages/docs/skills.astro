@@ -1,0 +1,20 @@
+---
+import MarkdownContainer from "@/components/MarkdownContainer.astro";
+import DocsLayout from "../../layouts/DocsLayout.astro";
+import { Content as SkillsContent } from '@/content/skills.md'
+import TableOfContents from "@/components/TableOfContents.astro";
+
+const headings = [
+    { href: '#how-i-build', label: 'How I build' },
+    { href: '#working-with-data', label: 'Working with Data' },
+    { href: '#ai-integration', label: 'AI Integration' },
+    { href: '#development-workflow', label: 'Development workflow' },
+    { href: '#what-im-learning', label: 'What I\'m learning' },
+]
+---
+<DocsLayout title="Skills">
+    <MarkdownContainer>
+        <SkillsContent />
+    </MarkdownContainer>
+    <TableOfContents headings={headings} slot='toc' />
+</DocsLayout>

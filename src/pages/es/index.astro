@@ -1,5 +1,6 @@
 ---
-import { ArrowUpRight, Github } from '@lucide/astro'
+import ArrowUpRight from '~/icons/arrow-up-right';
+import Github from '~/icons/github';
 import { getCollection } from 'astro:content';
 import { useLocale } from '../../i18n/context';
 import Layout from '../../layouts/Layout.astro';
@@ -65,7 +66,7 @@ const lang = useLocale(Astro)
 														<ArrowUpRight size={16}/>
 													</a>
 												) : (
-													<a href={data.github} target="_blank" class="text-typography-inverse dark:text-typography-main invisible group-hover:visible bg-slate-900/80 px-2 py-1 text-sm font-semibold outline-1 -outline-offset-2 outline-slate-200/25  rounded-xl flex items-center gap-2">
+													<a href={data.repositories[0].url} target="_blank" class="text-typography-inverse dark:text-typography-main invisible group-hover:visible bg-slate-900/80 px-2 py-1 text-sm font-semibold outline-1 -outline-offset-2 outline-slate-200/25  rounded-xl flex items-center gap-2">
 														{t(lang, 'landing.proyectsSection.proyectsCardCTA')}
 														<ArrowUpRight size={16}/>
 													</a>
@@ -90,7 +91,7 @@ const lang = useLocale(Astro)
 														</a>
 													)
 													}
-													<a href={data.github} target="_blank" class="btn btn-social">
+													<a href={data.repositories[0].url} target="_blank" class="btn btn-social">
 														<Github size={16} />
 														Code
 													</a>

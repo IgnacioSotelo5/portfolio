@@ -1,10 +1,10 @@
 ---
-import { ArrowUpRight } from '@lucide/astro';
+import ArrowUpRight from '~/icons/arrow-up-right';
 import { useLocale } from '../i18n/context';
 
 const lang = useLocale(Astro)
 
-const currentPath = Astro.url.pathname.split('/')[1]
+const currentPath = Astro.url.pathname.split('/').slice(1).join('/').replace('es/', '')
 
 const availableLangs = {
     en: {
@@ -41,11 +41,3 @@ const availableLangs = {
         })
     }
 </div>
-<!-- <a class="flex items-center gap-x-1 px-2 py-1 hover:bg-surface-elevated rounded-sm hover:text-action-secondary" >
-    English
-    <ArrowUpRight size={14} />
-</a>
-<a class="flex items-center gap-x-1 px-2 py-1 hover:bg-surface-elevated rounded-sm hover:text-action-secondary" href={lang === 'es' ? undefined : `/es/${currentPath}`}>
-    Español
-    <ArrowUpRight size={14} />
-</a> -->

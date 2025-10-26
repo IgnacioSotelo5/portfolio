@@ -1,12 +1,23 @@
 ---
 title: "Commit Genius"
 description: "Full-stack platform that generates smart, conventional commit messages using AI. Paste your git diff and get 3 professional commit options."
+shortDescription: "AI-powered commit message generator"
 tech: ["React", "TypeScript", "Tailwind CSS", "Vite", "Elysia", "Groq AI", "Bun"]
 featured: true
+category: "web"
+status: "completed"
 date: "2025-08-21"
-github: "https://github.com/IgnacioSotelo5/commit-genius-frontend"
+repositories:
+  - name: "Frontend"
+    url: "https://github.com/IgnacioSotelo5/commit-genius-frontend"
+    type: "frontend"
+  - name: "Backend"
+    url: "https://github.com/IgnacioSotelo5/commit-genius-backend"
+    type: "backend"
 demo: "https://commit-genius-frontend.vercel.app/"
 image: "/images/projects/commit-genius/preview.webp"
+priority: 9
+tags: ["ai", "developer-tools", "productivity"]
 ---
 
 # Commit Genius

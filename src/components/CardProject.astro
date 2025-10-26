@@ -1,0 +1,67 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ExternalLink from '~/icons/external-link';
+import Github from '~/icons/github';
+
+interface Props {
+    project: CollectionEntry<'projects'>;
+}
+
+const { project }: Props = Astro.props;
+const { title, shortDescription, description, tech, repositories, demo, website, image, category, status, tags } = project.data;
+---
+    <div class="group flex flex-col overflow-hidden rounded-lg border-divider dark:border-0 bg-surface-card transition-all hover:border-edge hover:shadow-lg">
+      <div class="relative w-full overflow-hidden bg-surface-elevated">
+        <img
+          src={image || "/placeholder.svg"}
+          alt={title}
+          class="h-full w-full aspect-[4/3] object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+      </div>
+
+      <div class="flex flex-1 flex-col p-6">
+        <h3 class="text-lg font-semibold text-foreground">{title}</h3>
+
+        <p class="mt-2 flex-1 text-sm text-muted-foreground">{description}</p>
+        <div class="mt-4 flex flex-wrap gap-2">
+          {project.data.tags.map((tag) => (
+            <span
+              class="inline-block rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        <div class="mt-6 flex gap-2">
+          <a
+            href={project.data.repositories.find(repo => repo.type === 'backend')?.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-2 rounded-md bg-muted px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+            title="Backend Repository"
+          >
+            <Github class="h-4 w-4" />
+            <span class="hidden sm:inline">Backend</span>
+          </a>
+          <a
+            href={repositories.find(repo => repo.type === 'frontend')?.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-2 rounded-md bg-muted px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+            title="UI Repository"
+          >
+            <Github class="h-4 w-4" />
+            <span class="hidden sm:inline">UI</span>
+          </a>
+        </div>
+
+        <a
+          href={`/docs/projects/${project.id}`}
+          class="mt-4 inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:opacity-90"
+        >
+          View Project
+          <ExternalLink class="h-4 w-4" />
+        </a>
+      </div>
+    </div>

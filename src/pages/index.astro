@@ -1,18 +1,21 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { ArrowUpRight, Github } from '@lucide/astro'
+import ArrowUpRight from '~/icons/arrow-up-right';
+import Github from '~/icons/github';
 import { getCollection } from 'astro:content';
 import { useLocale } from '../i18n/context';
 import { t } from '../i18n';
 
 const colSpanClasses = [
-	'col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-3',
+	'col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-[minmax(1fr,_2fr)]',
 	'col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-2',
 	'col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-2',
 	'col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-3'
 ]
 
 const projects = await getCollection('projects')
+const sortedProjects = projects.sort((a, b) => a.id.localeCompare(b.id))
+
 
 const lang = useLocale(Astro)
 
@@ -34,7 +37,7 @@ const lang = useLocale(Astro)
 				</p>
 			</div>
 			<div class="flex items-center gap-4">		
-				<a class="btn btn-bg-gradient hover:bg-surface-elevated text-white shadow-[0_1px_#fffa_inset] hover:shadow-none hover:-translate-y-0.5 transition-all duration-75 ease-in" href="/docs">{t(lang, 'landing.cta')}</a>
+				<a class="btn btn-bg-gradient hover:bg-surface-elevated text-white shadow-[0_1px_#fffa_inset] hover:shadow-none hover:-translate-y-0.5 transition-all duration-75 ease-in" href="/docs/introduction">{t(lang, 'landing.cta')}</a>
 				<a class="btn btn-social" target="_blank" href="https://github.com/IgnacioSotelo5">
 					<Github size={18} />
 					<span>Github</span>
@@ -45,7 +48,7 @@ const lang = useLocale(Astro)
 				<div class="w-full h-full">
 					<div class={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 lg:px-10 auto-rows-fr gap-4 h-full`} id="featured-projects">
 					{
-						projects.map(({data, id}, index) => (
+						sortedProjects.map(({data, id}, index) => (
 							<div class={`md:gap-4 min-h-[25rem] md:min-h-auto shadow-[-1px_-3px_12px_#0004] dark:shadow-none md:shadow-none bg-surface-card md:bg-transparent rounded-md ${colSpanClasses[index]}`}>
 								<div class={`cursor-pointer rounded-md md:aspect-auto md:h-[300px] min-h-[450px] md:min-h-auto h-full lg:h-full md:flex lg:aspect-auto group w-full`} id={id}>
 									<div class="md:relative flex flex-col md:flex-row flex-1 md:gap-6 h-full w-full rounded-md">
@@ -63,7 +66,7 @@ const lang = useLocale(Astro)
 														<ArrowUpRight size={16}/>
 													</a>
 												) : (
-													<a href={data.github} target="_blank" class="text-typography-inverse dark:text-typography-main invisible group-hover:visible bg-slate-900/80 px-2 py-1 text-sm font-semibold outline-1 -outline-offset-2 outline-slate-200/25  rounded-xl flex items-center gap-2">
+													<a href={data.repositories[0].url} target="_blank" class="text-typography-inverse dark:text-typography-main invisible group-hover:visible bg-slate-900/80 px-2 py-1 text-sm font-semibold outline-1 -outline-offset-2 outline-slate-200/25  rounded-xl flex items-center gap-2">
 														{t(lang, 'landing.proyectsSection.proyectsCardCTA')}
 														<ArrowUpRight size={16}/>
 													</a>
@@ -88,7 +91,7 @@ const lang = useLocale(Astro)
 														</a>
 													)
 													}
-													<a href={data.github} target="_blank" class="btn btn-social">
+													<a href={data.repositories[0].url} target="_blank" class="btn btn-social">
 														<Github size={16} />
 														Code
 													</a>

@@ -1,12 +1,22 @@
 ---
 title: "Bakery Inventory Management"
 description: "Full-stack solution for bakery inventory and business management, including a robust backend and a modern mobile app."
+shortDescription: "Full-stack solution for bakery inventory and business management, including a robust backend and a modern mobile app."
 tech: ["Express", "TypeScript", "Prisma", "MongoDB", "React Native", "Expo", "Tailwind CSS", "Zustand"]
 featured: true
 date: "2025-05-26"
-github: "https://github.com/IgnacioSotelo5/management-react-native"
-demo: null
+repositories:
+  - name: "Backend"
+    url: "https://github.com/IgnacioSotelo5/management-express"
+    type: "backend"
+  - name: "Mobile App"
+    url: "https://github.com/IgnacioSotelo5/management-react-native"
+    type: "mobile"
 image: "/images/projects/inventory-management/preview.png"
+category: "mobile"
+status: "in-progress"
+priority: 10
+tags: ["inventory", "management", "mobile", "backend"]
 ---
 
 # Bakery Inventory Management
