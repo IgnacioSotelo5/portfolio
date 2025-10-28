@@ -81,7 +81,7 @@ const isProjectsPage = Astro.url.pathname.includes('projects')
         </div>
         <div class="col-start-2 bg-surface-elevated"></div>
         <div transition:name="docsContent" class="flex col-start-3 p-10">
-          <div class={`overflow-y-auto flex-1 ${!isProjectsPage ? 'pl-40' : 'px-10'}`}>
+          <div class={`overflow-y-auto flex-1 ${!isProjectsPage ? 'pl-40' : 'px-8'}`}>
             <slot />
           </div>
           {

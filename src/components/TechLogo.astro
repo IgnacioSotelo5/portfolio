@@ -1,0 +1,55 @@
+---
+interface Props {
+    name: string;
+}
+
+const { name }: Props = Astro.props;
+
+// Mapeo de nombres normalizados a archivos de componentes
+const logoMap: Record<string, string> = {
+    astro: 'AstroLogo',
+    bun: 'Bun',
+    chartjs: 'Chartjs',
+    css: 'CSS',
+    elysia: 'Elysia',
+    elysiajs: 'Elysia',
+    expo: 'Expo',
+    express: 'Express',
+    groq: 'Groq',
+    html: 'HTML',
+    javascript: 'Javascript',
+    mongodb: 'Mongodb',
+    mysql: 'Mysql',
+    nest: 'Nest',
+    node: 'Node',
+    prisma: 'Prisma',
+    python: 'Python',
+    react: 'React',
+    reactnative: 'React',
+    tailwindcss: 'Tailwind',
+    tailwind: 'Tailwind',
+    typeorm: 'Typeorm',
+    typescript: 'Typescript',
+    vite: 'Vite',
+};
+
+const normalizedName = name.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+let componentName: string | null = logoMap[normalizedName];
+
+if (!componentName) {
+    const matchedKey = Object.keys(logoMap).find(key => 
+        normalizedName.includes(key) || key.includes(normalizedName)
+    );
+    componentName = matchedKey ? logoMap[matchedKey] : null;
+}
+
+if (!componentName) {
+    return null;
+}
+
+const LogoComponent = (await import(`./icons/logos/${componentName}.astro`)).default;
+---
+
+<LogoComponent height={18} width={18} />
+

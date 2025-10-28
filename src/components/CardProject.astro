@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import ExternalLink from '~/icons/external-link';
 import Github from '~/icons/github';
+import TechLogo from './TechLogo.astro';
 
 interface Props {
     project: CollectionEntry<'projects'>;
@@ -10,7 +11,16 @@ interface Props {
 const { project }: Props = Astro.props;
 const { title, shortDescription, description, tech, repositories, demo, website, image, category, status, tags } = project.data;
 ---
-    <div class="group flex flex-col overflow-hidden rounded-lg border-divider dark:border-0 bg-surface-card transition-all hover:border-edge hover:shadow-lg">
+    <div class="group relative flex flex-col overflow-hidden rounded-lg border border-edge dark:border-transparent dark:hover:border-action-primary/20 bg-surface-card transition-all hover:border-divider hover:shadow-lg">
+      <span class="absolute -top-[1.2px] right-0 z-10">
+        {
+          status === 'completed' ? (
+            <span class="inline-flex items-center gap-2 rounded-sm bg-action-primary/70 px-2 py-1 text-xs font-semibold rounded-tr-lg text-typography-main dark:text-white">Completed</span>
+          ) : (
+            <span class="inline-flex items-center gap-2 rounded-sm bg-action-secondary/70 px-2 py-1 text-xs font-semibold rounded-tr-lg text-typography-main dark:text-white">In Progress</span>
+          )
+        }
+      </span>
       <div class="relative w-full overflow-hidden bg-surface-elevated">
         <img
           src={image || "/placeholder.svg"}
@@ -19,46 +29,57 @@ const { title, shortDescription, description, tech, repositories, demo, website,
         />
       </div>
 
-      <div class="flex flex-1 flex-col p-6">
-        <h3 class="text-lg font-semibold text-foreground">{title}</h3>
+      <div class="flex flex-1 flex-col p-6 gap-y-3">
+        <h3 class="text-lg font-semibold text-typography-main">{title}</h3>
+        <p class="flex-1 text-sm text-typography-muted">{shortDescription}</p>
+        
+        <div class="flex flex-wrap gap-2">
+          {
+            tech.slice(0, 6).map((tech, index) => (
+              <span
+                class="inline-flex items-center gap-2 rounded-sm bg-surface-elevated px-2 py-1 text-xs font-medium text-typography-secondary"
+              >
 
-        <p class="mt-2 flex-1 text-sm text-muted-foreground">{description}</p>
-        <div class="mt-4 flex flex-wrap gap-2">
-          {project.data.tags.map((tag) => (
+                <TechLogo name={tech} />
+                {tech}
+              </span>
+            ))
+          }
+          {tech.length > 6 && (
             <span
-              class="inline-block rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground"
+              class="inline-flex items-center gap-2 rounded-sm bg-surface-elevated px-2 py-1 text-xs font-medium text-typography-muted"
             >
-              {tag}
+              +{tech.length - 6}
             </span>
-          ))}
+          )}
         </div>
 
-        <div class="mt-6 flex gap-2">
-          <a
-            href={project.data.repositories.find(repo => repo.type === 'backend')?.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="flex items-center gap-2 rounded-md bg-muted px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
-            title="Backend Repository"
-          >
-            <Github class="h-4 w-4" />
-            <span class="hidden sm:inline">Backend</span>
-          </a>
+        <div class="flex gap-2 mt-2">
           <a
             href={repositories.find(repo => repo.type === 'frontend')?.url}
             target="_blank"
             rel="noopener noreferrer"
-            class="flex items-center gap-2 rounded-md bg-muted px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+            class="flex items-center gap-2 rounded-md bg-surface-elevated px-3 py-2 text-sm font-medium text-typography-main transition-colors hover:bg-action-accent hover:text-typography-inverse"
             title="UI Repository"
           >
-            <Github class="h-4 w-4" />
+            <Github size={16} />
             <span class="hidden sm:inline">UI</span>
+          </a>
+          <a
+            href={project.data.repositories.find(repo => repo.type === 'backend')?.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-2 rounded-md bg-surface-elevated px-3 py-2 text-sm font-medium text-typography-main transition-colors hover:bg-action-accent hover:text-typography-inverse"
+            title="Backend Repository"
+          >
+            <Github size={16} />
+            <span class="hidden sm:inline">Backend</span>
           </a>
         </div>
 
         <a
           href={`/docs/projects/${project.id}`}
-          class="mt-4 inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:opacity-90"
+          class="mt-2 inline-flex items-center justify-center gap-2 rounded-md bg-action-primary px-4 py-2 text-sm font-semibold text-typography-main transition-colors hover:opacity-90"
         >
           View Project
           <ExternalLink class="h-4 w-4" />
