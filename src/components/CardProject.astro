@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 import ExternalLink from '~/icons/external-link';
 import Github from '~/icons/github';
 import TechLogo from './TechLogo.astro';
+import { useLocale } from '@/i18n/context';
 
 interface Props {
     project: CollectionEntry<'projects'>;
@@ -10,6 +11,9 @@ interface Props {
 
 const { project }: Props = Astro.props;
 const { title, shortDescription, description, tech, repositories, demo, website, image, category, status, tags } = project.data;
+
+const lang = useLocale(Astro);
+
 ---
     <div class="group relative flex flex-col overflow-hidden rounded-lg border border-edge dark:border-transparent dark:hover:border-action-primary/20 bg-surface-card transition-all hover:border-divider hover:shadow-lg">
       <span class="absolute -top-[1.2px] right-0 z-10">
@@ -78,7 +82,7 @@ const { title, shortDescription, description, tech, repositories, demo, website,
         </div>
 
         <a
-          href={`/docs/projects/${project.id}`}
+          href={`/docs/projects/${project.id.split('/')[1]}`}
           class="mt-2 inline-flex items-center justify-center gap-2 rounded-md bg-action-primary px-4 py-2 text-sm font-semibold text-typography-main transition-colors hover:opacity-90"
         >
           View Project

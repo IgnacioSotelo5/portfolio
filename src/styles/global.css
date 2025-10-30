@@ -27,7 +27,7 @@
 
 	--color-surface-main: #fafafa;        /* Main page background */
 	--color-surface-card: #ffffff;        /* Cards, modals, elevated surfaces */
-	--color-surface-elevated: #f8f9fa;    /* Hover states, subtle elevation */
+	--color-surface-elevated: #f6f7f8;    /* Hover states, subtle elevation */
 	--color-surface-code: #f6f8fa;        /* Code blocks, pre tags */
 
 	--color-typography-main: #1a1a1a;           /* Main headings, body text */

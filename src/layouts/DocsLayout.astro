@@ -67,7 +67,7 @@ const isProjectsPage = Astro.url.pathname.includes('projects')
                       <div class="flex flex-col w-full text-sm">
                           {
                             Object.entries(links).map(([_, {pageLink}]) => (
-                              <li class="flex text-typography-secondary hover:text-typography-main border-l border-edge pl-4 py-1 hover:border-action-accent hover:border-l-2">
+                              <li class="flex text-typography-main hover:text-action-accent border-l border-edge pl-4 py-1 hover:border-action-accent hover:border-l-2">
                                 <a href={pageLink.href}>{pageLink.label}</a>
                               </li>
                             ))

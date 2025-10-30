@@ -50,11 +50,6 @@ Bakery Inventory Management is a full-stack project designed to streamline the o
 - React Native, Expo, Zustand, Tailwind CSS
 - Navigation, forms, and API integration for inventory management
 
-## Links
-
-- [Backend Repository](https://github.com/IgnacioSotelo5/management-express)
-- [Mobile App Repository](https://github.com/IgnacioSotelo5/management-react-native)
-
 ## Example: Ingredient Creation Logic
 
 ```ts

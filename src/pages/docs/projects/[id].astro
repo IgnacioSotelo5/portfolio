@@ -9,7 +9,7 @@ export async function getStaticPaths() {
     const projects = await getCollection('projects')
 
     return projects.map((project) => ({
-        params: { id: project.id },
+        params: { id: project.id.split('/')[1] },
         props: { project }
     }))
 }
@@ -59,7 +59,7 @@ const { Content } = await render(project)
                                 <h3 class="text-sm font-semibold text-typography-main uppercase tracking-wide">Tech Stack</h3>
                                 <div class="flex flex-wrap gap-2">
                                     {tech.map((t: string) => (
-                                        <span class="px-3 py-1.5 rounded-md text-sm font-medium bg-surface-elevated text-typography-main border border-divider">
+                                        <span class="px-3 py-1.5 rounded-md text-sm font-medium bg-surface-card text-typography-main border border-divider/50">
                                             {t}
                                         </span>
                                     ))}
@@ -133,8 +133,8 @@ const { Content } = await render(project)
             )}
 
             <div class="max-w-6xl mx-auto px-6">
-                <div class="prose prose-invert max-w-none">
-                    <Content exclude={['h1']} />
+                <div class="prose dark:prose-invert max-w-none">
+                    <Content />
                 </div>
             </div>
         </div>

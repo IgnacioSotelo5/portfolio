@@ -1,8 +1,9 @@
 import {defineCollection, z} from 'astro:content'
 import {glob} from 'astro/loaders'
 
+
 const projects = defineCollection({
-    loader: glob({ pattern: '*.md', base: './src/content/projects' }),
+    loader: glob({ pattern: '*/*.md', base: './src/content/projects' }),
     schema: z.object({
         title: z.string(),
         description: z.string(),
@@ -26,4 +27,18 @@ const projects = defineCollection({
     })
 })
 
-export const collections = { projects }
+const changelog = defineCollection({
+  loader: glob({ pattern: '*/*.md', base: './src/content/changelog' }),
+  schema: z.object({
+    date: z.string().or(z.date()),
+    title: z.string(),
+    category: z.enum(['project', 'milestone', 'learning', 'career', 'work', 'life', 'education', 'achievement']),
+    tags: z.array(z.string()),
+    tech: z.array(z.string()).optional(),
+    github: z.string().url().optional(),
+    demo: z.string().url().optional(),
+    status: z.enum(['Completado', 'En desarrollo', 'Pausado', 'Completed', 'In progress', 'Archived']).optional(),
+  }),
+});
+
+export const collections = { projects, changelog }

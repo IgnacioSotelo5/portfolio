@@ -14,7 +14,7 @@ const { headings } = Astro.props;
         <li id={`section-link-${href.replace('#', '')}`} class="pl-4">
           <a 
             href={href} 
-            class="text-typography-secondary hover:text-typography-main transition-colors duration-200"
+            class="text-typography-main hover:text-typography-secondary transition-colors duration-200"
           >
             {label}
           </a>
@@ -41,7 +41,7 @@ const callback: IntersectionObserverCallback = (entries) => {
     
     document.querySelectorAll('#internal-nav a').forEach(link => {
       link.classList.remove('text-action-accent')
-      link.classList.add('text-typography-secondary')
+      link.classList.add('text-typography-main')
     })
 
     let activeHeadingId: string | null = null
@@ -51,7 +51,7 @@ const callback: IntersectionObserverCallback = (entries) => {
       const activeHeadingId = sortedEntries[0][0]
       const link = document.querySelector(`#section-link-${activeHeadingId} > a`)
       if(link) {
-        link.classList.remove('text-typography-secondary')
+        link.classList.remove('text-typography-main')
         link.classList.add('text-action-accent')
       }
     } else {
@@ -77,7 +77,7 @@ const callback: IntersectionObserverCallback = (entries) => {
       if(activeHeadingId) {
         const link = document.querySelector(`#section-link-${activeHeadingId} > a`)
         if(link) {
-          link.classList.remove('text-typography-secondary')
+          link.classList.remove('text-typography-main')
           link.classList.add('text-action-accent')
         }
       }

@@ -1,9 +1,182 @@
 ---
+import { useLocale } from "@/i18n/context";
 import DocsLayout from "@/layouts/DocsLayout.astro";
+import { render } from "astro:content";
+import { getCollection } from "astro:content";
+
+const lang = useLocale(Astro)
+
+console.log(lang)
+
+const allChangelog = await getCollection("changelog", (entry) => entry.id.split('/')[0] === lang);
+
+const ContentProjects = await Promise.all(
+  allChangelog.map(async (entry) => {
+    console.log(entry)
+    const {Content} = await render(entry);
+    return {...entry, Content};
+  })
+);
+
+// Helper function to parse dates as local time instead of UTC
+const parseLocalDate = (dateString: string | Date) => {
+  if (dateString instanceof Date) return dateString;
+  const [year, month, day] = dateString.split('-').map(Number);
+  return new Date(year, (month || 1) - 1, day || 1);
+};
+
+const sortedChangelog = ContentProjects.sort((a, b) => 
+  parseLocalDate(b.data.date).getTime() - parseLocalDate(a.data.date).getTime()
+);
+
+// Group by year
+const groupedByYear = sortedChangelog.reduce((acc, entry) => {
+  const year = parseLocalDate(entry.data.date).getFullYear();
+  if (!acc[year]) acc[year] = [];
+  acc[year].push(entry);
+  return acc;
+}, {} as Record<number, typeof ContentProjects>);
+
+const years = Object.keys(groupedByYear).sort((a, b) => Number(b) - Number(a));
+
+const categoryColors: Record<string, string> = {
+  career: "bg-action-primary/10 text-action-primary border-action-primary/20",
+  learning: "bg-action-secondary/10 text-action-secondary border-action-secondary/20",
+  project: "bg-action-accent/10 text-action-accent border-action-accent/20",
+  milestone: "bg-action-primary/10 text-action-primary border-action-primary/20",
+  achievement: "bg-action-secondary/10 text-action-secondary border-action-secondary/20",
+  work: "bg-action-primary/10 text-action-primary border-action-primary/20",
+  life: "bg-action-accent/10 text-action-accent border-action-accent/20",
+  education: "bg-action-secondary/10 text-action-secondary border-action-secondary/20",
+};
+
+const categoryLabels: Record<string, string> = {
+  career: "Career",
+  learning: "Learning",
+  project: "Project",
+  milestone: "Milestone",
+  achievement: "Achievement",
+  work: "Work",
+  life: "Life",
+  education: "Education",
+};
 ---
 
-<DocsLayout>
-    <div>
-        <h1>Changelog</h1>
-    </div>
+<DocsLayout title="Changelog">
+  <div class="prose dark:prose-invert prose-headings:scroll-mt-24 pb-[50vh] max-w-4xl">
+    <h1>Changelog</h1>
+    <p class="lead">A journey through my life, from before programming to today.</p>
+
+    {/* Empty state */}
+    {sortedChangelog.length === 0 && (
+      <div class="text-center py-16">
+        <p class="text-typography-secondary">No changelog entries yet.</p>
+      </div>
+    )}
+
+    {/* Timeline entries grouped by year */}
+    {years.map((year) => (
+      <div class="mb-12">
+        <h2 id={`year-${year}`} class="text-2xl font-bold mb-6 border-b border-edge pb-2">{year}</h2>
+
+        <div class="space-y-6">
+          {groupedByYear[Number(year)].map((entry) => {
+            const colorClass = categoryColors[entry.data.category] || categoryColors.milestone;
+            const categoryLabel = categoryLabels[entry.data.category] || entry.data.category;
+            const rawDate = entry.data.date;
+
+            let year: number | undefined;
+            let month: number | undefined;
+            let day: number | undefined;
+            let date: Date;
+
+            if (typeof rawDate === "string") {
+              const parts = rawDate.split("-").map(Number);
+              [year, month, day] = parts;
+              // Creamos un Date igualmente, pero solo para formateo
+              date = new Date(year, (month || 1) - 1, day || 1);
+            } else if (rawDate instanceof Date) {
+              date = rawDate;
+              year = date.getFullYear();
+              month = date.getMonth() + 1;
+              day = date.getDate();
+            } else {
+              throw new Error("entry.data.date debe ser string o Date");
+            }
+
+            // Formateamos según qué partes existan
+            let formattedDate: string;
+
+            if (typeof rawDate === "string") {
+              if (day) {
+                formattedDate = date.toLocaleDateString("es-AR", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                  timeZone: "UTC",
+                });
+              } else if (month) {
+                formattedDate = date.toLocaleDateString("es-AR", {
+                  month: "long",
+                  year: "numeric",
+                  timeZone: "UTC",
+                });
+              } else {
+                formattedDate = date.toLocaleDateString("es-AR", {
+                  year: "numeric",
+                  timeZone: "UTC",
+                });
+              }
+            } else {
+              // Si ya es Date, asumimos que tiene día
+              formattedDate = date.toLocaleDateString("es-AR", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+                timeZone: "UTC",
+              });
+}
+
+            
+            return (
+              <article class="border border-edge rounded-lg p-5 hover:border-action-primary/30 transition-colors">
+                <div class="flex items-start justify-between gap-4 mb-3">
+                  <div class="flex-1">
+                    <h3 class="text-lg font-semibold text-typography-main mb-1">
+                      {entry.data.title}
+                    </h3>
+                    <div class="flex items-center gap-2 text-sm text-typography-secondary">
+                      <time datetime={date.toLocaleString()}>
+                        {formattedDate}
+                      </time>
+                      <span class="text-typography-secondary/50">•</span>
+                      <span class={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border ${colorClass}`}>
+                        {categoryLabel}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="text-sm text-typography-secondary leading-relaxed mb-3">
+                  {
+                    <entry.Content />
+                  }
+                </div>
+
+                {entry.data.tags && entry.data.tags.length > 0 && (
+                  <div class="flex flex-wrap gap-2 mt-3">
+                    {entry.data.tags.map((tag) => (
+                      <span class="px-2 py-1 rounded text-xs font-medium text-typography-secondary/80 bg-surface-elevated border border-edge">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    ))}
+  </div>
 </DocsLayout>
