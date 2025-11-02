@@ -1,8 +1,8 @@
 ---
 date: "2025-01"
 title: "Uniéndome a comunidades tech"
-category: "learning"
-tags: ["community", "learning"]
+category: "aprendizaje"
+tags: ["comunidad", "aprendizaje"]
 ---
 
 Me uní a The Odin Project y comencé a participar más activamente en comunidades de desarrollo.

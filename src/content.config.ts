@@ -11,7 +11,7 @@ const projects = defineCollection({
         tech: z.array(z.string()),
         featured: z.boolean().default(false),
         category: z.enum(['web', 'mobile', 'desktop', 'api', 'library', 'other']).default('web'),
-        status: z.enum(['completed', 'in-progress', 'archived']).default('completed'),
+        status: z.enum(['completed', 'in-progress', 'archived', 'completado', 'en progreso', 'archivado']).default('completed'),
         date: z.string().transform((str) => new Date(str)),
         repositories: z.array(z.object({
             name: z.string(),
@@ -32,7 +32,7 @@ const changelog = defineCollection({
   schema: z.object({
     date: z.string().or(z.date()),
     title: z.string(),
-    category: z.enum(['project', 'milestone', 'learning', 'career', 'work', 'life', 'education', 'achievement']),
+    category: z.enum(['project', 'milestone', 'learning', 'career', 'work', 'life', 'education', 'achievement', 'proyecto', 'hito', 'aprendizaje', 'carrera', 'trabajo', 'vida', 'educacion', 'logro']),
     tags: z.array(z.string()),
     tech: z.array(z.string()).optional(),
     github: z.string().url().optional(),

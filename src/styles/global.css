@@ -3,7 +3,7 @@
 
 @font-face {
   font-family: 'Satoshi';
-  src: url('../fonts/Satoshi-Variable.woff2') format('woff2'),
+  src: url('/fonts/Satoshi-Variable.woff2') format('woff2'),
        url('../fonts/Satoshi-Variable.woff') format('woff');
   font-weight: 100 900;
   font-display: swap;
@@ -126,6 +126,13 @@
     /* prevent FOUC */
     body:not(.light):not(.dark) {
         visibility: hidden;
+    }
+
+    #logo{
+        content: url('/public/logo-light.webp');
+        &:where(.dark, .dark *) {
+            content: url('/public/logo-dark.webp');
+        }
     }
 
 }

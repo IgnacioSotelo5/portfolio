@@ -1,7 +1,7 @@
 ---
 date: "2024-06"
 title: "Dynamic Slug - Mi proyecto final más ambicioso"
-category: "project"
+category: "proyecto"
 tags: ["fullstack", "backend", "nestjs"]
 tech: ["React", "NestJS", "TypeScript", "MySQL", "TypeORM", "TailwindCSS"]
 github: "https://github.com/IgnacioSotelo5/dynamic-slug"

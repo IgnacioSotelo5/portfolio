@@ -14,12 +14,16 @@ const lang = useLocale(Astro)
 
 <header class="w-full h-16 fixed top-0 z-50 flex animate-header px-12">
 			<nav class="flex items-center justify-between w-full h-full">
-				<div>logo</div>
+				<a href={`${lang === 'es' ? '/es' : '/'}`} class="flex items-center">
+					<img id="logo" alt="logo" class="aspect-video">
+				</a>
 				<div class="flex items-center justify-between gap-x-3">
 					<div class="relative group py-4">
 						<button data-action="downloadCV" title="Descargar CV" class="cursor-pointer flex items-center gap-x-0.5 hover:text-typography-secondary" aria-label="Descargar CV">
 							<span>
-								Resume
+								{
+									t(lang, 'header.resumeDropdown')
+								}
 							</span>
 							<ChevronDown size={16} />
 						</button>
@@ -45,13 +49,13 @@ const lang = useLocale(Astro)
 					<div class="h-5 p-px bg-edge rounded-full" />
 					<div class="relative cursor-pointer py-4">
 						<div id="themePicker" class="flex items-center p-0.5 bg-surface-elevated border border-edge rounded-full " aria-label="Cambiar tema">
-							<span data-theme="system" class="p-1.5 rounded-full hover:bg-surface-card aria-selected:bg-surface-card" title={t(lang, 'theme.system')}>
+							<span data-theme="system" class="p-1.5 rounded-full hover:bg-surface-card aria-selected:bg-surface-card" title={t(lang, 'header.theme.system')}>
 								<Monitor size={20} />
 							</span>
-							<span data-theme="light" class="p-1.5 rounded-full hover:bg-surface-card aria-selected:bg-surface-card" title={t(lang, 'theme.light')}>
+							<span data-theme="light" class="p-1.5 rounded-full hover:bg-surface-card aria-selected:bg-surface-card" title={t(lang, 'header.theme.light')}>
 								<Sun size={20} />
 							</span>
-							<span data-theme="dark" class="p-1.5 rounded-full hover:bg-surface-card aria-selected:bg-surface-card" title={t(lang, 'theme.dark')}>
+							<span data-theme="dark" class="p-1.5 rounded-full hover:bg-surface-card aria-selected:bg-surface-card" title={t(lang, 'header.theme.dark')}>
 								<Moon size={20} />
 							</span>
 						</div>

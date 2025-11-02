@@ -1,8 +1,8 @@
 ---
 date: "2025-10-23"
 title: "Primera entrevista técnica"
-category: "milestone"
-tags: ["career", "interview", "react-native"]
+category: "hito"
+tags: ["carrera", "entrevista", "react native"]
 ---
 
 Tuve mi primera entrevista técnica para una posición de Desarrollador React Native. 

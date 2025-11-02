@@ -1,7 +1,7 @@
 ---
 date: "2025-02"
 title: "Bakery Management App - Resolviendo un problema real"
-category: "project"
+category: "proyecto"
 tags: ["react-native", "expo", "mongodb", "prisma", "mobile"]
 tech: ["React Native", "Expo", "TypeScript", "Express", "MongoDB", "Prisma", "NativeWind"]
 github: "https://github.com/IgnacioSotelo5/bakery-app"

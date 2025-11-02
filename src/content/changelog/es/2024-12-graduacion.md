@@ -1,8 +1,8 @@
 ---
 date: "2024-12-14"
 title: "Graduado - Full Stack Web Developer"
-category: "milestone"
-tags: ["education", "achievement"]
+category: "hito"
+tags: ["educacion", "logro"]
 ---
 
 Me gradué del bootcamp de Full Stack Web Development del Clúster Tecnológico de Tandil.

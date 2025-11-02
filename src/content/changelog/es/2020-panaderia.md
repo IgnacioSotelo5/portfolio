@@ -1,8 +1,8 @@
 ---
 date: "2020-01-01"
 title: "Trabajando en la panadería familiar"
-category: "work"
-tags: ["work", "family-business"]
+category: "trabajo"
+tags: ["trabajo", "negocio familiar"]
 ---
 
 Empecé a trabajar de forma más estable en la panadería familiar.

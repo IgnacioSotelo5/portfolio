@@ -1,8 +1,8 @@
 ---
 date: "2022-06"
 title: "Los inicios - Aprendiendo desarrollo web por mi cuenta"
-category: "learning"
-tags: ["self-taught", "html", "css", "javascript", "react"]
+category: "aprendizaje"
+tags: ["autodidacta", "html", "css", "javascript", "react"]
 ---
 
 Empecé mi viaje en el desarrollo web de forma completamente autodidacta.

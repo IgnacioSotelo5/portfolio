@@ -3,16 +3,17 @@ import CardProject from "@/components/CardProject.astro";
 import DocsLayout from "@/layouts/DocsLayout.astro";
 import { getCollection } from 'astro:content';
 import { useLocale } from "@/i18n/context";
+
 const lang = useLocale(Astro)
 
-// Obtener todos los proyectos de la colección
-const allProjects = await getCollection('projects', (entry) => entry.id.split('/')[0] === lang);
+// Get all projects from the collection
+const allProjects = await getCollection('projects', (entry) => entry.id.split('/')[0] === lang );
 
-// Separar proyectos destacados y regulares
+// Separate featured and regular projects
 const featuredProjects = allProjects.filter(project => project.data.featured);
 const regularProjects = allProjects.filter(project => !project.data.featured);
 
-// Ordenar por prioridad (mayor a menor) y luego por fecha
+// Sort by priority (highest to lowest) and then by date
 const sortedFeaturedProjects = featuredProjects.sort((a, b) => {
     if (a.data.priority !== b.data.priority) {
         return b.data.priority - a.data.priority;

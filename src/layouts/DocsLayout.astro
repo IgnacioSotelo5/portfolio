@@ -1,16 +1,24 @@
 ---
+import { useLocale } from "@/i18n/context";
 import Layout from "./Layout.astro";
+import { t } from "@/i18n";
 
 type SidebarLink = {
   pageLink: { href: string, label: string }
 }
+
+const lang = useLocale(Astro)
+console.log(lang);
+
+const baseURI = '/docs'
+const resolvedLangURI = lang === 'en' ? baseURI : `/${lang}${baseURI}`
 
 const sidebarLinks: Record<string, { title: string, links: Record<string, SidebarLink> }> = {
   overview: {
     title: 'Overview',
     links: {
       introduction: {
-        pageLink: { href: '/docs/introduction', label: 'Introduction' }
+        pageLink: { href: `${resolvedLangURI}/introduction`, label: 'Introduction' }
       }
     },
   },
@@ -18,7 +26,7 @@ const sidebarLinks: Record<string, { title: string, links: Record<string, Sideba
     title: 'Work',
     links: {
       projects: {
-        pageLink: { href: '/docs/projects', label: 'Projects' }
+        pageLink: { href: `${resolvedLangURI}/projects`, label: 'Projects' }
       }
     }
   },
@@ -26,10 +34,10 @@ const sidebarLinks: Record<string, { title: string, links: Record<string, Sideba
     title: 'Background',
     links: {
       education: {
-        pageLink: { href: '/docs/education', label: 'Education' }
+        pageLink: { href: `${resolvedLangURI}/education`, label: 'Education' }
       },
       skills: {
-        pageLink: { href: '/docs/skills', label: 'Skills' }
+        pageLink: { href: `${resolvedLangURI}/skills`, label: 'Skills' }
       }
     }
   },
@@ -37,7 +45,7 @@ const sidebarLinks: Record<string, { title: string, links: Record<string, Sideba
     title: 'Resources',
     links: {
       changelog: {
-        pageLink: { href: '/docs/changelog', label: 'Changelog' }
+        pageLink: { href: `${resolvedLangURI}/changelog`, label: 'Changelog' }
       }
     }
   },
@@ -45,7 +53,7 @@ const sidebarLinks: Record<string, { title: string, links: Record<string, Sideba
     title: 'Connect',
     links: {
       contact: {
-        pageLink: { href: '/docs/contact', label: 'Contact' }
+        pageLink: { href: `${resolvedLangURI}/contact`, label: 'Contact' }
       }
     }
   }
@@ -58,17 +66,17 @@ const isProjectsPage = Astro.url.pathname.includes('projects')
 <Layout context="docs">
     <div class="mt-16 min-h-dvh w-full absolute grid grid-cols-[16rem_2.5rem_minmax(0,1fr)]">
         <div class="col-start-1 h-full border-r border-edge bg-surface/50 overflow-y-hidden">
-            <div role="navigation" transition:persist class="flex flex-col fixed gap-2 p-4 items-center py-6 px-8">
+            <div role="navigation" class="flex flex-col fixed gap-2 p-4 items-center py-6 px-8">
                 <ul class="flex flex-col gap-2">
                   {
                     Object.entries(sidebarLinks).map(([_, {links, title}]) => (
                       <>
-                      <div class="font-semibold text-sm tracking-wider">{title}</div>
+                      <div class="font-semibold text-sm tracking-wider">{t(lang, `docs.sidebar.${title.toLowerCase()}.title`)}</div>
                       <div class="flex flex-col w-full text-sm">
                           {
                             Object.entries(links).map(([_, {pageLink}]) => (
                               <li class="flex text-typography-main hover:text-action-accent border-l border-edge pl-4 py-1 hover:border-action-accent hover:border-l-2">
-                                <a href={pageLink.href}>{pageLink.label}</a>
+                                <a href={pageLink.href}>{t(lang, `docs.sidebar.${title.toLowerCase()}.${pageLink.label.toLowerCase()}.label`)}</a>
                               </li>
                             ))
                           }
@@ -100,18 +108,20 @@ const isProjectsPage = Astro.url.pathname.includes('projects')
   function highlightSidebarItem() {
     const sidebar = document.querySelector('div[role="navigation"]')
     const sidebarLinks = sidebar?.querySelectorAll('a')
-    const currentSection = window.location.pathname.split('/').pop()
+    const currentPath = window.location.pathname
     
     sidebarLinks?.forEach(link => {
       const li = link.parentElement
       link.classList.remove('text-action-accent', 'font-semibold')
       li?.classList.remove('border-action-accent', 'border-l-2', 'border-action-accent', 'border-edge')
-      if (link.textContent?.toLowerCase() === currentSection) {
+      if (link.getAttribute('href') === currentPath) {
         link.classList.add('text-action-accent', 'font-semibold')
         li?.classList.add('border-action-accent', 'border-l-2', 'border-action-accent')
       }
     })
   }
-  
-  document.addEventListener('astro:page-load', highlightSidebarItem)
+
+  document.addEventListener('astro:page-load', () => {
+     highlightSidebarItem()
+    })
 </script>

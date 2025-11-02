@@ -1,0 +1,18 @@
+---
+import MarkdownContainer from "@/components/MarkdownContainer.astro";
+import DocsLayout from "@/layouts/DocsLayout.astro";
+import { Content as EducationContent } from '@/content/pages/es/educacion.md'
+import TableOfContents from "@/components/TableOfContents.astro";
+
+const headings = [
+    { href: '#educación-formal', label: 'Educación formal' },
+    { href: '#certificaciones-y-cursos', label: 'Certificaciones y Cursos' },
+]
+---
+
+<DocsLayout title="Education">
+    <MarkdownContainer>
+        <EducationContent />
+    </MarkdownContainer>
+    <TableOfContents headings={headings} slot="toc" />
+</DocsLayout>

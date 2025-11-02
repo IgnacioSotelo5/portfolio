@@ -1,14 +1,18 @@
 ---
+import { t } from '@/i18n';
+import { useLocale } from '@/i18n/context';
+
 export interface Props {
   headings: { href: string; label: string }[];
 }
 
 const { headings } = Astro.props;
+const lang = useLocale(Astro);
 ---
 
 {headings.length > 0 && (
   <div id="internal-nav">
-    <h2 class="text-sm font-semibold tracking-wider mb-4 text-typography-main">On this page</h2>
+    <h2 class="text-sm font-semibold tracking-wider mb-4 text-typography-main">{t(lang, 'tableOfContents.onThisPage')}</h2>
     <ul class="flex flex-col gap-2 text-sm border-l-2 border-edge">
       {headings.map(({ href, label }) => (
         <li id={`section-link-${href.replace('#', '')}`} class="pl-4">

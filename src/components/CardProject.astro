@@ -4,6 +4,7 @@ import ExternalLink from '~/icons/external-link';
 import Github from '~/icons/github';
 import TechLogo from './TechLogo.astro';
 import { useLocale } from '@/i18n/context';
+import { t } from '@/i18n';
 
 interface Props {
     project: CollectionEntry<'projects'>;
@@ -14,14 +15,17 @@ const { title, shortDescription, description, tech, repositories, demo, website,
 
 const lang = useLocale(Astro);
 
+console.log(lang);
+
+
 ---
     <div class="group relative flex flex-col overflow-hidden rounded-lg border border-edge dark:border-transparent dark:hover:border-action-primary/20 bg-surface-card transition-all hover:border-divider hover:shadow-lg">
       <span class="absolute -top-[1.2px] right-0 z-10">
         {
-          status === 'completed' ? (
-            <span class="inline-flex items-center gap-2 rounded-sm bg-action-primary/70 px-2 py-1 text-xs font-semibold rounded-tr-lg text-typography-main dark:text-white">Completed</span>
+          (status === 'completed' || status === 'completado') ? (
+            <span class="inline-flex items-center gap-2 rounded-sm bg-action-primary/70 px-2 py-1 text-xs font-semibold rounded-tr-lg text-typography-main dark:text-white">{status.charAt(0).toUpperCase() + status.slice(1)}</span>
           ) : (
-            <span class="inline-flex items-center gap-2 rounded-sm bg-action-secondary/70 px-2 py-1 text-xs font-semibold rounded-tr-lg text-typography-main dark:text-white">In Progress</span>
+            <span class="inline-flex items-center gap-2 rounded-sm bg-action-secondary/70 px-2 py-1 text-xs font-semibold rounded-tr-lg text-typography-main dark:text-white">{status.charAt(0).toUpperCase() + status.slice(1)}</span>
           )
         }
       </span>
@@ -82,10 +86,10 @@ const lang = useLocale(Astro);
         </div>
 
         <a
-          href={`/docs/projects/${project.id.split('/')[1]}`}
+          href={lang === 'en' ? `/docs/projects/${project.id.split('/')[1]}` : `/${lang}/docs/projects/${project.id.split('/')[1]}`}
           class="mt-2 inline-flex items-center justify-center gap-2 rounded-md bg-action-primary px-4 py-2 text-sm font-semibold text-typography-main transition-colors hover:opacity-90"
         >
-          View Project
+          {t(lang, 'cardProject.ctaButton')}
           <ExternalLink class="h-4 w-4" />
         </a>
       </div>

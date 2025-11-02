@@ -1,8 +1,8 @@
 ---
 date: "2025-08"
 title: "Commit Genius - Mi primer proyecto con IA"
-category: "project"
-tags: ["ai", "automation", "backend"]
+category: "proyecto"
+tags: ["ia", "automatizacion", "backend"]
 tech: ["React", "ElysiaJS", "Groq API", "AI"]
 github: "https://github.com/IgnacioSotelo5/commit-genius"
 status: "Completado"

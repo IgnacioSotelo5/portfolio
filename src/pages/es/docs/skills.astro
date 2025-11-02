@@ -1,0 +1,20 @@
+---
+import MarkdownContainer from "@/components/MarkdownContainer.astro";
+import DocsLayout from "@/layouts/DocsLayout.astro";
+import { Content as SkillsContent } from '@/content/pages/es/habilidades.md'
+import TableOfContents from "@/components/TableOfContents.astro";
+
+const headings = [
+    { href: '#cómo-construyo', label: 'Cómo construyo' },
+    { href: '#trabajando-con-datos', label: 'Trabajando con Datos' },
+    { href: '#integración-de-ia', label: 'Integración de IA' },
+    { href: '#flujo-de-desarrollo', label: 'Flujo de desarrollo' },
+    { href: '#qué-estoy-aprendiendo', label: 'Qué estoy aprendiendo' },
+]
+---
+<DocsLayout title="Habilidades">
+    <MarkdownContainer>
+        <SkillsContent />
+    </MarkdownContainer>
+    <TableOfContents headings={headings} slot='toc' />
+</DocsLayout>

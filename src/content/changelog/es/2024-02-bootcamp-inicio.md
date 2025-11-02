@@ -1,8 +1,8 @@
 ---
 date: "2023-02"
 title: "Empezando el bootcamp - Full Stack Web Development"
-category: "education"
-tags: ["education", "bootcamp", "learning"]
+category: "educacion"
+tags: ["educacion", "bootcamp", "aprendizaje"]
 ---
 
 Arranqué el bootcamp de Full Stack Web Development en el Clúster Tecnológico de Tandil. Me doy cuenta que quiero cumplir este objetivo cuando el dia que tengo la primer clase me estoy volviendo del Camino de los Arrayanes en Villa la Angostura a contrarreloj para poder cursar en una estacion de servicio 🤣.

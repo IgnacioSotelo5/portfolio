@@ -1,8 +1,8 @@
 ---
 date: "2025-08"
 title: "Certificaciones en Inteligencia Artificial"
-category: "learning"
-tags: ["certification", "ai"]
+category: "aprendizaje"
+tags: ["certificacion", "ia"]
 ---
 
 Completé dos certificaciones en IA:

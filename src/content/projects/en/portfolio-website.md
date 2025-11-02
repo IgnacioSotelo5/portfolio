@@ -1,7 +1,7 @@
 ---
-title: "Portfolio Personal"
-description: "Mi sitio web personal construido con Astro, TypeScript y Tailwind CSS. Incluye internacionalización, modo oscuro y un sistema de contenido modular."
-shortDescription: "Sitio web personal con Astro y TypeScript"
+title: "Personal Portfolio"
+description: "My personal website built with Astro, TypeScript and Tailwind CSS. Includes internationalization, dark mode and a modular content system."
+shortDescription: "Personal website with Astro and TypeScript"
 tech: ["Astro", "TypeScript", "Tailwind CSS", "Markdown", "i18n"]
 featured: false
 category: "web"
@@ -17,51 +17,51 @@ priority: 8
 tags: ["portfolio", "astro", "responsive", "dark-mode"]
 ---
 
-# Portfolio Personal
+# Personal Portfolio
 
-## Descripción
+## Description
 
-Mi sitio web personal desarrollado con tecnologías modernas para mostrar mis proyectos, habilidades y experiencia profesional. El sitio está construido con Astro para obtener el máximo rendimiento y SEO.
+My personal website developed with modern technologies to showcase my projects, skills and professional experience. The site is built with Astro for maximum performance and SEO.
 
-## Características Principales
+## Key Features
 
-- **Rendimiento Optimizado**: Construido con Astro para carga ultra-rápida
-- **Internacionalización**: Soporte para español e inglés
-- **Modo Oscuro**: Tema adaptable con preferencias del usuario
-- **Diseño Responsivo**: Optimizado para todos los dispositivos
-- **Sistema de Contenido**: Gestión de contenido con Markdown y colecciones
-- **SEO Optimizado**: Meta tags y estructura semántica
+- **Optimized Performance**: Built with Astro for ultra-fast loading
+- **Internationalization**: Support for Spanish and English
+- **Dark Mode**: Adaptive theme with user preferences
+- **Responsive Design**: Optimized for all devices
+- **Content System**: Content management with Markdown and collections
+- **SEO Optimized**: Meta tags and semantic structure
 
-## Tecnologías Utilizadas
+## Technologies Used
 
 - **Framework**: Astro 4.x
-- **Lenguaje**: TypeScript
-- **Estilos**: Tailwind CSS v4
-- **Contenido**: Markdown con frontmatter
+- **Language**: TypeScript
+- **Styles**: Tailwind CSS v4
+- **Content**: Markdown with frontmatter
 - **Deployment**: Vercel/Netlify
 
-## Estructura del Proyecto
+## Project Structure
 
 ```
 src/
-├── components/     # Componentes reutilizables
-├── content/        # Contenido en Markdown
-├── i18n/          # Archivos de traducción
-├── layouts/       # Layouts de página
-├── pages/         # Páginas del sitio
-└── styles/        # Estilos globales
+├── components/     # Reusable components
+├── content/        # Markdown content
+├── i18n/          # Translation files
+├── layouts/       # Page layouts
+├── pages/         # Site pages
+└── styles/        # Global styles
 ```
 
-## Características Técnicas
+## Technical Features
 
-- **SSG**: Generación estática para máximo rendimiento
-- **TypeScript**: Tipado estático para mejor desarrollo
-- **Colecciones**: Sistema de contenido estructurado
-- **Componentes**: Arquitectura modular y reutilizable
+- **SSG**: Static site generation for maximum performance
+- **TypeScript**: Static typing for better development
+- **Collections**: Structured content system
+- **Components**: Modular and reusable architecture
 
-## Próximas Mejoras
+## Future Improvements
 
-- [ ] Blog integrado
-- [ ] Sistema de comentarios
-- [ ] Analytics avanzados
+- [ ] Integrated blog
+- [ ] Comment system
+- [ ] Advanced analytics
 - [ ] PWA capabilities

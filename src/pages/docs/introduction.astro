@@ -2,7 +2,7 @@
 import MarkdownContainer from "@/components/MarkdownContainer.astro";
 import DocsLayout from "../../layouts/DocsLayout.astro";
 import TableOfContents from "@/components/TableOfContents.astro";
-import {Content as AboutContent} from "@/content/pages/en/introduction.md"
+import { Content as IntroductionContent } from "@/content/pages/en/introduction.md"
 
 const headings = [
   { href: '#about-me', label: 'About me' },
@@ -15,7 +15,7 @@ const headings = [
 
 <DocsLayout title="Introduction">
     <MarkdownContainer>
-        <AboutContent />
+        <IntroductionContent />
     </MarkdownContainer>
     
     <TableOfContents headings={headings} slot="toc" />

@@ -1,0 +1,22 @@
+---
+import DocsLayout from "@/layouts/DocsLayout.astro"; 
+import { Content as IntroductionContent } from "@/content/pages/es/introduccion.md";
+import MarkdownContainer from "@/components/MarkdownContainer.astro";
+import TableOfContents from "@/components/TableOfContents.astro";
+
+const headings = [
+  { href: '#sobre-mí', label: 'Sobre mí' },
+  { href: '#mi-historia', label: 'Mi historia' },
+  { href: '#en-qué-estoy-trabajando', label: 'En qué estoy trabajando' },
+  { href: '#qué-me-motiva', label: 'Qué me motiva' },
+  { href: '#qué-sigue', label: 'Qué sigue' },
+];
+---
+
+<DocsLayout title="Introducción">
+    <MarkdownContainer>
+        <IntroductionContent />
+    </MarkdownContainer>
+    
+    <TableOfContents headings={headings} slot="toc" />
+</DocsLayout>

@@ -6,6 +6,8 @@ import { getCollection } from 'astro:content';
 import { useLocale } from '../i18n/context';
 import { t } from '../i18n';
 
+const lang = useLocale(Astro)
+
 const colSpanClasses = [
 	'col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-[minmax(1fr,_2fr)]',
 	'col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-2',
@@ -13,11 +15,10 @@ const colSpanClasses = [
 	'col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-3'
 ]
 
-const projects = await getCollection('projects')
+const projects = await getCollection('projects', (entry) => entry.id.split('/')[0] === lang)
 const sortedProjects = projects.sort((a, b) => a.id.localeCompare(b.id))
 
 
-const lang = useLocale(Astro)
 
 ---
 

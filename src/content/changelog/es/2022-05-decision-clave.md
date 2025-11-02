@@ -1,8 +1,8 @@
 ---
 date: "2022-05-12"
 title: "La decisión que cambió todo"
-category: "milestone"
-tags: ["personal", "sacrifice", "commitment"]
+category: "hito"
+tags: ["personal", "sacrificio", "compromiso"]
 ---
 
 Vendí mi moto.

@@ -11,5 +11,57 @@
             "title": "Proyectos destacados",
             "proyectsCardCTA": "Código fuente"
         }
+    },
+    "header": {
+        "resumeDropdown": "Currículum",
+        "theme": {
+            "system": "Sistema",
+            "light": "Claro",
+            "dark": "Oscuro"
+        }
+
+    },
+    "docs": {
+        "sidebar": {
+            "overview": {
+                "title": "Descripción general",
+                "introduction": {
+                    "label": "Introducción"
+                }
+            },
+            "work": {
+                "title": "Trabajo",
+                "projects": {
+                    "label": "Proyectos"
+                }
+            },
+            "background": {
+                "title": "Conocimientos",
+                "education": {
+                    "label": "Educación"
+                },
+                "skills": {
+                    "label": "Habilidades"
+                }
+            },
+            "resources": {
+                "title": "Recursos",
+                "changelog": {
+                    "label": "Changelog"
+                }
+            },
+            "connect": {
+                "title": "Contacto",
+                "contact": {
+                    "label": "Contacto"
+                }
+            }
+        }
+    },
+    "tableOfContents": {
+        "onThisPage": "En esta página"
+    }, 
+    "cardProject": {
+        "ctaButton": "Ver Proyecto"
     }
 }

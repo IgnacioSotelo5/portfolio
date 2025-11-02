@@ -1,8 +1,8 @@
 ---
 date: "2025-10-09"
 title: "Búsqueda activa de mi primer empleo como dev"
-category: "career"
-tags: ["job-search", "career"]
+category: "carrera"
+tags: ["busqueda de empleo", "carrera"]
 ---
 
 Después de meses de preparación, tomé la decisión de enfocarme 100% en conseguir mi primera posición como desarrollador.

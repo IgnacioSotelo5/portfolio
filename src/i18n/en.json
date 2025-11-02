@@ -16,9 +16,56 @@
             "proyectsCardCTA": "Source code"
         }
     },
-    "theme": {
-        "system": "System",
-        "light": "Light",
-        "dark": "Dark"
+    "header": {
+        "resumeDropdown": "Resume",
+        "theme": {
+            "system": "System",
+            "light": "Light",
+            "dark": "Dark"
+        }
+
+    },
+    "docs": {
+        "sidebar": {
+            "overview": {
+                "title": "Overview",
+                "introduction": {
+                    "label": "Introduction"
+                }
+            },
+            "work": {
+                "title": "Work",
+                "projects": {
+                    "label": "Projects"
+                }
+            },
+            "background": {
+                "title": "Background",
+                "education": {
+                    "label": "Education"
+                },
+                "skills": {
+                    "label": "Skills"
+                }
+            },
+            "resources": {
+                "title": "Resources",
+                "changelog": {
+                    "label": "Changelog"
+                }
+            },
+            "connect": {
+                "title": "Connect",
+                "contact": {
+                    "label": "Contact"
+                }
+            }
+        }
+    }, 
+    "tableOfContents": {
+        "onThisPage": "On this page"
+    },
+    "cardProject": {
+        "ctaButton": "View Project"
     }
 }
