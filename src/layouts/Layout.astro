@@ -19,12 +19,15 @@ const lang = useLocale(Astro)
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewpor🇪🇸t" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{t(lang, 'title')}</title>
 		<meta name="description" content={t(lang, 'description')}>
 		<meta name="author" content="Ignacio Sotelo" />
 		<meta name="keywords" content="Portfolio, Developer, Software Engineer, Web Developer, Fullstack, Frontend, Backend, JavaScript, TypeScript, React, Node.js, Astro" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+		<link rel="icon" href="/favicon/favicon.ico">
 		<ClientRouter />
 		<script>
 			const userPref = localStorage.getItem('theme-preference')
