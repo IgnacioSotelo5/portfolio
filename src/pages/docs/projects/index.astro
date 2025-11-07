@@ -5,14 +5,14 @@ import { getCollection } from 'astro:content';
 import { useLocale } from "@/i18n/context";
 const lang = useLocale(Astro)
 
-// Obtener todos los proyectos de la colección
+// Get all projects
 const allProjects = await getCollection('projects', (entry) => entry.id.split('/')[0] === lang);
 
-// Separar proyectos destacados y regulares
+// Separate featured and regular projects
 const featuredProjects = allProjects.filter(project => project.data.featured);
 const regularProjects = allProjects.filter(project => !project.data.featured);
 
-// Ordenar por prioridad (mayor a menor) y luego por fecha
+// Sort by priority (highest to lowest) and then by date
 const sortedFeaturedProjects = featuredProjects.sort((a, b) => {
     if (a.data.priority !== b.data.priority) {
         return b.data.priority - a.data.priority;
@@ -32,13 +32,13 @@ const sortedRegularProjects = regularProjects.sort((a, b) => {
 <DocsLayout>
     <div class="w-full overflow-x-hidden">
         <h1 class="text-3xl font-bold mb-8">
-            Proyectos
+            Projects
         </h1>
         
         {sortedFeaturedProjects.length > 0 && (
             <section class="mb-12">
                 <h2 class="text-2xl font-semibold mb-6">
-                    Proyectos Destacados
+                    Featured Projects
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(335px,1fr))] gap-6">
                     {sortedFeaturedProjects.map((project) => (
@@ -51,7 +51,7 @@ const sortedRegularProjects = regularProjects.sort((a, b) => {
         {sortedRegularProjects.length > 0 && (
             <section>
                 <h2 class="text-2xl font-semibold mb-6">
-                    Otros Proyectos
+                    Other Projects
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {sortedRegularProjects.map((project) => (
@@ -64,7 +64,7 @@ const sortedRegularProjects = regularProjects.sort((a, b) => {
         {allProjects.length === 0 && (
             <div class="text-center py-12">
                 <p class="text-gray-600 dark:text-gray-400">
-                    No hay proyectos disponibles en este momento.
+                    No projects available at the moment.
                 </p>
             </div>
         )}

@@ -31,6 +31,7 @@ console.log(lang);
       </span>
       <div class="relative w-full overflow-hidden bg-surface-elevated">
         <img
+          transition:name={`project-image-${project.id.split('/')[1]}`}
           src={image || "/placeholder.svg"}
           alt={title}
           class="h-full w-full aspect-[4/3] object-cover transition-transform duration-300 group-hover:scale-105"

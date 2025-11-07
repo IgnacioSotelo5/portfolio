@@ -112,7 +112,7 @@ const { Content } = await render(project)
                     <div class="lg:col-span-1">
                         {image && (
                             <div class="sticky top-24 rounded-lg overflow-hidden border border-divider bg-surface-elevated">
-                                <img src={image || "/placeholder.svg"} alt={title} class="w-full aspect-[4/3] object-cover" />
+                                <img transition:name={`project-image-${project.id.split('/')[1]}`} src={image || "/placeholder.svg"} alt={title} class="w-full aspect-[4/3] object-cover" />
                             </div>
                         )}
                     </div>
