@@ -17,7 +17,8 @@ const colSpanClasses = [
 ]
 
 const projects = await getCollection('projects', (entry) => entry.id.split('/')[0] === lang)
-const sortedProjects = projects.sort((a,b) => a.id.localeCompare(b.id))
+const featuredProjects = projects.filter(project => project.data.featured)
+const sortedFeaturedProjects = featuredProjects.sort((a,b) => a.id.localeCompare(b.id))
 
 ---
 
@@ -48,7 +49,7 @@ const sortedProjects = projects.sort((a,b) => a.id.localeCompare(b.id))
 				<div class="w-full h-full">
 					<div class={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 lg:px-10 auto-rows-fr gap-4 h-full`} id="featured-projects">
 					{
-						sortedProjects.map(({data, id}, index) => (
+						sortedFeaturedProjects.map(({data, id}, index) => (
 							<div class={`md:gap-4 min-h-[25rem] md:min-h-auto shadow-[-1px_-3px_12px_#0004] dark:shadow-none md:shadow-none bg-surface-card md:bg-transparent rounded-md ${colSpanClasses[index]}`}>
 								<div class={`cursor-pointer rounded-md md:aspect-auto md:h-[300px] min-h-[450px] md:min-h-auto h-full lg:h-full md:flex lg:aspect-auto group w-full`} id={id}>
 									<div class="md:relative flex flex-col md:flex-row flex-1 md:gap-6 h-full w-full rounded-md">

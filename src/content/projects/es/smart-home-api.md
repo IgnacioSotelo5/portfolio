@@ -11,7 +11,7 @@ featured: false
 date: "2024-07-01"
 image: "/images/projects/smart-home-api/preview.webp"
 category: "api"
-status: "completed"
+status: "completado"
 priority: 6
 tags: ["api", "nestjs", "iot", "hogar-inteligente", "backend", "rest"]
 ---

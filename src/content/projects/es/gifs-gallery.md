@@ -11,7 +11,7 @@ featured: false
 date: "2024-10-07"
 image: "/images/projects/gifs-gallery/preview.webp"
 category: "web"
-status: "completed"
+status: "completado"
 priority: 5
 tags: ["react", "carga-archivos", "galería", "frontend"]
 ---

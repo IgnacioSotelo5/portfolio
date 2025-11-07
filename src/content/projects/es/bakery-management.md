@@ -12,7 +12,7 @@ repositories:
   - name: "Aplicación Móvil"
     url: "https://github.com/IgnacioSotelo5/management-react-native"
     type: "mobile"
-image: "/images/projects/inventory-management/preview.png"
+image: "/images/projects/bakery-management/preview.webp"
 category: "mobile"
 status: "en progreso"
 priority: 10
