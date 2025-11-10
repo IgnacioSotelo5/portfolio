@@ -1,6 +1,8 @@
 ---
 import ArrowUpRight from '~/icons/arrow-up-right';
 import { useLocale } from '../i18n/context';
+import Languages from '~/icons/languages';
+import ChevronDown from '~/icons/chevron-down';
 
 const lang = useLocale(Astro)
 
@@ -18,26 +20,41 @@ const availableLangs = {
 }
 
 ---
-<div data-lang-dropdown class="group absolute top-[calc(4rem_/_2_+_20px)] bg-surface-card border border-edge px-3 py-2 rounded-md group-hover:flex hidden flex-col gap-y-1 text-sm">
-    {
-        Object.entries(availableLangs).sort(([keyA], [keyB]) => {
-            if(keyA === lang) return -1
-            if(keyB === lang) return 1
-            return 0
-        }).map(([key, { name, href }]) => {
-            if(lang === key) {
+<div class="relative group py-4">
+    <button data-action="switchLang" id="changeLanguage" class="flex items-center gap-x-0.5 py-2 px-3 cursor-pointer hover:text-typography-secondary" aria-label="Cambiar idioma">
+        <Languages size={20} />
+        <ChevronDown size={16} />
+    </button>
+    <div data-lang-dropdown class="group relative w-fit top-2 lg:absolute lg:top-[calc(4rem_/_2_+_20px)] bg-surface-card border border-edge px-3 py-2 rounded-md group-hover:flex flex-col hidden gap-y-1 text-sm">
+        {
+            Object.entries(availableLangs).sort(([keyA], [keyB]) => {
+                if(keyA === lang) return -1
+                if(keyB === lang) return 1
+                return 0
+            }).map(([key, { name, href }]) => {
+                if(lang === key) {
+                    return (
+                        <span aria-current="true" class="flex items-center gap-x-1 px-2 py-1 font-bold">
+                            {name}
+                        </span>
+                    )
+                }
                 return (
-                    <span aria-current="true" class="flex items-center gap-x-1 px-2 py-1 font-bold">
+                    <a class="flex items-center gap-x-1 px-2 py-1 hover:bg-surface-elevated rounded-sm hover:text-action-secondary" href={href}>
                         {name}
-                    </span>
+                        <ArrowUpRight size={14} />
+                    </a>
                 )
-            }
-            return (
-                <a class="flex items-center gap-x-1 px-2 py-1 hover:bg-surface-elevated rounded-sm hover:text-action-secondary" href={href}>
-                    {name}
-                    <ArrowUpRight size={14} />
-                </a>
-            )
-        })
-    }
+            })
+        }
+    </div>
 </div>
+
+<script>
+    const langDropdown = document.querySelector('[data-lang-dropdown]')
+    const changeLanguage = document.querySelector('#changeLanguage')
+
+    changeLanguage?.addEventListener('click', () => {
+        langDropdown?.classList.toggle('hidden')
+    })
+</script>

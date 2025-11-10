@@ -1,0 +1,37 @@
+---
+import { t } from "@/i18n";
+import ChevronDown from "~/icons/chevron-down";
+import { useLocale } from "@/i18n/context";
+
+const lang = useLocale(Astro)
+---
+
+<div class="relative group py-4">
+    <button data-action="downloadCV" title="Descargar CV" class="cursor-pointer flex items-center gap-x-0.5 hover:text-typography-secondary" aria-label="Descargar CV">
+        <span>
+            {
+                t(lang, 'header.resumeDropdown')
+            }
+        </span>
+        <ChevronDown size={16} />
+    </button>
+    <div data-cv-dropdown class="hidden relative top-2 w-fit lg:absolute z-10 lg:top-[calc(4rem_/_2_+_20px)] bg-surface-card border border-edge px-3 py-2 rounded-md group-hover:flex  flex-col gap-y-1 text-sm font-semibold">
+        <a class="flex items-center gap-x-1 w-full hover:bg-surface-elevated px-2 py-1 rounded-sm" href="/CV_Ignacio_Sotelo_ES.pdf" download>
+                <span>ES</span>
+                <img class="size-5" src="/flags/es.svg" alt="">
+            </a>
+        <a class="flex items-center gap-x-1 w-full hover:bg-surface-elevated px-2 py-1 rounded-sm" href="/CV_Ignacio_Sotelo_EN.pdf" download>
+                <span>EN</span>
+                <img class="size-5" src="/flags/us.svg" alt="">
+            </a>
+    </div>
+</div>
+
+<script>
+    const cvDropdown = document.querySelector('[data-cv-dropdown]')
+    const downloadCV = document.querySelector('[data-action="downloadCV"]')
+
+    downloadCV?.addEventListener('click', () => {
+        cvDropdown?.classList.toggle('hidden')
+    })
+</script>

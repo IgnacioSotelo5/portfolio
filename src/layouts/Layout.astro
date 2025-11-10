@@ -18,7 +18,7 @@ const lang = useLocale(Astro)
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewpor🇪🇸t" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{t(lang, 'title')}</title>
 		<meta name="description" content={t(lang, 'description')}>
@@ -30,58 +30,10 @@ const lang = useLocale(Astro)
 		<link rel="icon" href="/favicon/favicon.ico">
 		<ClientRouter />
 		<script>
+			import { applyTheme } from '../scripts/theme'
+
 			const userPref = localStorage.getItem('theme-preference')
-			const systemPref = window.matchMedia('(prefers-color-scheme: dark')
-			
-			// Usamos targetElement para en transiciones aplicar el tema al body del nuevo documento.
-			const applyTheme = (theme: string, targetElement = document.body) => {
-				
-				targetElement.classList.remove('light', 'dark', 'system')
-				if(theme === 'dark'){
-					targetElement.classList.add('dark')
-				} else if(theme === 'system') {
-					if(systemPref.matches) {
-						targetElement.classList.add('dark')
-					} else {
-						targetElement.classList.add('light')
-					}
-				} else {
-					targetElement.classList.add('light')
-				}
-			}
-
-			
-			const attachPickers = () => {
-				const themePicker = document.getElementById('themePicker');
-				if(!themePicker) return
-				const userPref = localStorage.getItem('theme-preference') || 'system'
-				const allPickers = themePicker.querySelectorAll('[data-theme]')
-				allPickers.forEach(picker => {
-					if((picker as HTMLElement)?.dataset?.theme === userPref) {
-						picker.setAttribute('aria-selected', 'true')
-					} else {
-						picker.removeAttribute('aria-selected')
-					}
-				})
-				
-				themePicker.addEventListener('click', (e) => {
-					const picker = (e.target as HTMLElement)?.closest?.('[data-theme]') as HTMLElement | null
-					if(!picker) return
-
-					const theme = picker?.dataset?.theme
-					if(!theme) return
-
-					localStorage.setItem('theme-preference', theme)
-
-					allPickers.forEach(p => p.removeAttribute('aria-selected'))
-					picker.setAttribute('aria-selected', 'true')
-
-					applyTheme(theme)
-				})
-			}
-			
 			applyTheme(userPref || 'system')
-			attachPickers()
 			
 			// Asegurar que el tema se aplica en transiciones, porque ClientRouter reemplaza el HTML antes de aplicar las clases.
 			document.addEventListener('astro:before-swap', (ev) => {
@@ -89,9 +41,7 @@ const lang = useLocale(Astro)
 				applyTheme(theme, ev.newDocument.body)
 			})
 
-			document.addEventListener('astro:page-load', () => {
-				attachPickers()
-			})
+			
 		</script>
 	</head>
 	<body class={`text-typography-main ${context}`}>

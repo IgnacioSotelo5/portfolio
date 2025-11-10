@@ -1,0 +1,62 @@
+---
+import Monitor from "~/icons/monitor";
+import Sun from "~/icons/sun"
+import Moon from "~/icons/moon"
+import { useLocale } from "@/i18n/context";
+import { t } from "@/i18n";
+
+const lang = useLocale(Astro)
+
+---
+<div class="relative cursor-pointer py-4">
+    <div id="themePicker" class="flex items-center p-0.5 bg-surface-elevated border border-edge rounded-full " aria-label="Cambiar tema">
+        <span data-theme="system" class="p-1.5 rounded-full hover:bg-surface-card aria-selected:bg-surface-card" title={t(lang, 'header.theme.system')}>
+            <Monitor size={20} />
+        </span>
+        <span data-theme="light" class="p-1.5 rounded-full hover:bg-surface-card aria-selected:bg-surface-card" title={t(lang, 'header.theme.light')}>
+            <Sun size={20} />
+        </span>
+        <span data-theme="dark" class="p-1.5 rounded-full hover:bg-surface-card aria-selected:bg-surface-card" title={t(lang, 'header.theme.dark')}>
+            <Moon size={20} />
+        </span>
+    </div>
+</div>
+
+<script>
+    import { applyTheme } from "@/scripts/theme";
+
+    const attachPickers = () => {
+        const themePicker = document.getElementById('themePicker');
+        if(!themePicker) return
+        const userPref = localStorage.getItem('theme-preference') || 'system'
+        const allPickers = themePicker.querySelectorAll('[data-theme]')
+        allPickers.forEach(picker => {
+            if((picker as HTMLElement)?.dataset?.theme === userPref) {
+                picker.setAttribute('aria-selected', 'true')
+            } else {
+                picker.removeAttribute('aria-selected')
+            }
+        })
+        
+        themePicker.addEventListener('click', (e) => {
+            const picker = (e.target as HTMLElement)?.closest?.('[data-theme]') as HTMLElement | null
+            if(!picker) return
+
+            const theme = picker?.dataset?.theme
+            if(!theme) return
+
+            localStorage.setItem('theme-preference', theme)
+
+            allPickers.forEach(p => p.removeAttribute('aria-selected'))
+            picker.setAttribute('aria-selected', 'true')
+
+            applyTheme(theme)
+        })
+    }
+
+	attachPickers()
+
+    document.addEventListener('astro:page-load', () => {
+		attachPickers()
+	})
+</script>

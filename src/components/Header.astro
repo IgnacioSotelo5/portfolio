@@ -1,65 +1,144 @@
 ---
-import { t } from '@/i18n';
 import LanguagePicker from './LanguagePicker.astro';
-import ChevronDown from '~/icons/chevron-down';
-import Languages from '~/icons/languages';
-import Monitor from '~/icons/monitor';
-import Moon from '~/icons/moon';
-import Sun from '~/icons/sun';
+import ThemePicker from './ThemePicker.astro';
+import ResumeDownloadDropdown from './ResumeDownloadDropdown.astro';
+import ChartNoAxesGantt from '~/icons/chart-no-axes-gantt';
+import X from '~/icons/x';
 import { useLocale } from '@/i18n/context';
 
-const lang = useLocale(Astro)
-
+const lang = useLocale(Astro);
 ---
 
-<header class="w-full h-16 fixed top-0 z-50 flex animate-header px-12">
-			<nav class="flex items-center justify-between w-full h-full">
-				<a href={`${lang === 'es' ? '/es' : '/'}`} class="flex items-center">
-					<img src="/logo.webp" id="logo" alt="logo" class="h-16">
-				</a>
-				<div class="flex items-center justify-between gap-x-3">
-					<div class="relative group py-4">
-						<button data-action="downloadCV" title="Descargar CV" class="cursor-pointer flex items-center gap-x-0.5 hover:text-typography-secondary" aria-label="Descargar CV">
-							<span>
-								{
-									t(lang, 'header.resumeDropdown')
-								}
-							</span>
-							<ChevronDown size={16} />
-						</button>
-						<div data-cv-dropdown class="absolute top-[calc(4rem_/_2_+_20px)] bg-surface-card border border-edge px-3 py-2 rounded-md group-hover:flex hidden flex-col gap-y-1 text-sm font-semibold">
-							<a class="flex items-center gap-x-1 w-full hover:bg-surface-elevated px-2 py-1 rounded-sm" href="/CV_Ignacio_Sotelo_ES.pdf" download>
-									<span>ES</span>
-									<img class="size-5" src="/flags/es.svg" alt="">
-								</a>
-							<a class="flex items-center gap-x-1 w-full hover:bg-surface-elevated px-2 py-1 rounded-sm" href="/CV_Ignacio_Sotelo_EN.pdf" download>
-									<span>EN</span>
-									<img class="size-5" src="/flags/us.svg" alt="">
-								</a>
-						</div>
-					</div>
-					<div class="h-5 p-px bg-edge rounded-full" />
-					<div class="relative group py-4">
-						<button data-action="switchLang" id="changeLanguage" class="flex items-center gap-x-0.5 py-2 px-3 cursor-pointer hover:text-typography-secondary" aria-label="Cambiar idioma">
-							<Languages size={20} />
-							<ChevronDown size={16} />
-						</button>
-						<LanguagePicker />
-					</div>
-					<div class="h-5 p-px bg-edge rounded-full" />
-					<div class="relative cursor-pointer py-4">
-						<div id="themePicker" class="flex items-center p-0.5 bg-surface-elevated border border-edge rounded-full " aria-label="Cambiar tema">
-							<span data-theme="system" class="p-1.5 rounded-full hover:bg-surface-card aria-selected:bg-surface-card" title={t(lang, 'header.theme.system')}>
-								<Monitor size={20} />
-							</span>
-							<span data-theme="light" class="p-1.5 rounded-full hover:bg-surface-card aria-selected:bg-surface-card" title={t(lang, 'header.theme.light')}>
-								<Sun size={20} />
-							</span>
-							<span data-theme="dark" class="p-1.5 rounded-full hover:bg-surface-card aria-selected:bg-surface-card" title={t(lang, 'header.theme.dark')}>
-								<Moon size={20} />
-							</span>
-						</div>
-					</div>
-				</div>
-			</nav>
-		</header>
+<header class="w-full h-16 fixed top-0 z-50 flex animate-header px-8 lg:px-12">
+	<nav class="flex items-center justify-between w-full h-full">
+		<a href={`${lang === 'es' ? '/es' : '/'}`} class="flex items-center h-full">
+			<img src="/logo.webp" id="logo" alt="logo" class="h-16">
+		</a>
+		<div>
+			<button class="flex items-center lg:hidden pr-4" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+				<ChartNoAxesGantt id="menu-button" class='size-6 absolute transition-all duration-300 ease-in-out' />
+				<X id="close-button" class='size-6 absolute opacity-0 transition-all duration-300 ease-in-out pointer-events-none' />
+			</button>
+			<div id="mobile-menu" class="opacity-0 bg-surface-card border-t border-edge lg:border-0 lg:bg-transparent flex-col items-start w-full h-screen absolute top-16 lg:top-0 px-8 right-0 left-0 z-50 lg:opacity-100 lg:h-auto lg:gap-x-3 lg:flex lg:flex-row lg:relative lg:justify-between lg:items-center lg:gap-y-0 gap-y-3 transition-all duration-300 ease-in-out">
+				<ResumeDownloadDropdown />
+				<div class="p-px w-full rounded-md bg-edge lg:h-5 lg:rounded-full" />
+				<LanguagePicker />
+				<div class="p-px w-full rounded-md bg-edge lg:h-5 lg:rounded-full" />
+				<ThemePicker />
+			</div>
+		</div>
+	</nav>
+</header>
+
+<script>
+	let menuOpen = false;
+
+	function toggleMenu(open?: boolean) {
+		const menuButton = document.querySelector('#menu-button');
+		const closeButton = document.querySelector('#close-button');
+		const menu = document.querySelector('#mobile-menu');
+		const headerButton = document.querySelector('button[aria-controls="mobile-menu"]');
+		
+		if (!menu || !menuButton || !closeButton || !headerButton) return;
+		
+		menuOpen = open ?? !menuOpen;
+		
+		if (menuOpen) {
+			menu?.classList.remove('menu-closed');
+			menu?.classList.add('menu-open');
+			menuButton?.classList.add('hidden');
+			closeButton?.classList.add('visible');
+			headerButton?.setAttribute('aria-expanded', 'true');
+		} else {
+			menu?.classList.remove('menu-open');
+			menu?.classList.add('menu-closed');
+			menuButton?.classList.remove('hidden');
+			closeButton?.classList.remove('visible');
+			headerButton?.setAttribute('aria-expanded', 'false');
+		}
+
+	}
+
+	function initMenu() {
+		const menuButton = document.querySelector('#menu-button');
+		const closeButton = document.querySelector('#close-button');
+
+		menuButton?.addEventListener('click', () => toggleMenu(true));
+		closeButton?.addEventListener('click', () => toggleMenu(false));
+		
+		window.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape' && menuOpen) toggleMenu(false);
+		});
+	}
+
+	document.addEventListener('astro:page-load', () => {
+		initMenu()
+		toggleMenu(false)
+	})
+</script>
+
+<style>
+	@media (width < 1024px) {
+		#mobile-menu {
+			transform: translateY(-10px);
+		}
+
+		#mobile-menu.menu-open {
+			display: flex;
+			animation: fadeSlideDown 0.3s ease-in-out forwards;
+		}
+
+		#mobile-menu.menu-closed {
+			animation: fadeSlideUp 0.3s ease-in-out forwards;
+		}
+
+		@keyframes fadeSlideDown {
+			from {
+				opacity: 0;
+				transform: translateY(-10px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}		
+		}
+
+		@keyframes fadeSlideUp {
+			from {
+				opacity: 1;
+				transform: translateY(0);
+			}
+			to {
+				opacity: 0;
+				transform: translateY(-10px);
+			}
+		}
+
+		#menu-button.hidden {
+			pointer-events: none;
+		}
+
+		#close-button.visible {
+			opacity: 1;
+			pointer-events: auto;
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			#mobile-menu,
+			#menu-button,
+			#close-button {
+				@apply transition-none;
+			}
+
+			@keyframes fadeSlideDown {
+				from { opacity: 1; transform: translateY(0); }
+				to { opacity: 1; transform: translateY(0); }
+			}
+
+			@keyframes fadeSlideUp {
+				from { opacity: 1; transform: translateY(0); }
+				to { opacity: 1; transform: translateY(0); }
+			}
+		}
+	}
+</style>
