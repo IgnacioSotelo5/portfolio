@@ -10,7 +10,6 @@ const allChangelog = await getCollection("changelog", (entry) => entry.id.split(
 
 const ContentProjects = await Promise.all(
   allChangelog.map(async (entry) => {
-    console.log(entry)
     const {Content} = await render(entry);
     return {...entry, Content};
   })
