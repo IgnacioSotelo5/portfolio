@@ -1,0 +1,110 @@
+---
+import { t } from "@/i18n";
+import { useLocale } from "@/i18n/context";
+import ChartNoAxesColumnDecreasing from '~/icons/chart-no-axes-column-decreasing';
+
+
+type SidebarLink = {
+    pageLink: { href: string, label: string }
+}
+
+const lang = useLocale(Astro)
+
+const baseURI = '/docs'
+const resolvedLangURI = lang === 'en' ? baseURI : `/${lang}${baseURI}`
+
+const sidebarLinks: Record<string, { title: string, links: Record<string, SidebarLink> }> = {
+  overview: {
+    title: 'Overview',
+    links: {
+      introduction: {
+        pageLink: { href: `${resolvedLangURI}/introduction`, label: 'Introduction' }
+      }
+    },
+  },
+  work: {
+    title: 'Work',
+    links: {
+      projects: {
+        pageLink: { href: `${resolvedLangURI}/projects`, label: 'Projects' }
+      }
+    }
+  },
+  background: {
+      title: 'Background',
+    links: {
+      education: {
+          pageLink: { href: `${resolvedLangURI}/education`, label: 'Education' }
+        },
+      skills: {
+        pageLink: { href: `${resolvedLangURI}/skills`, label: 'Skills' }
+      }
+    }
+  },
+  resources: {
+    title: 'Resources',
+    links: {
+        changelog: {
+            pageLink: { href: `${resolvedLangURI}/changelog`, label: 'Changelog' }
+        }
+    }
+  },
+  connect: {
+    title: 'Connect',
+    links: {
+      contact: {
+        pageLink: { href: `${resolvedLangURI}/contact`, label: 'Contact' }
+      }
+    }
+  }
+}
+---
+<>
+    <button class="lg:hidden flex gap-x-2 items-center text-xs font-semibold tracking-wider fixed top-20 left-4 z-50">
+        <ChartNoAxesColumnDecreasing size={16} class="rotate-90" />
+        <span>
+            Menu
+        </span>
+    </button>
+    <div role="navigation" class="hidden flex-col items-start fixed h-dvh w-3/4 overflow-y-scroll top-0 bg-surface-card z-50 gap-2 px-8 py-6 lg:flex lg:max-w-64 lg:overflow-auto lg:bg-transparent lg:top-16 lg:border-edge">
+        <ul class="flex flex-col gap-2">
+            {
+            Object.entries(sidebarLinks).map(([_, {links, title}]) => (
+                <>
+                <div class="font-semibold text-sm tracking-wider">{t(lang, `docs.sidebar.${title.toLowerCase()}.title`)}</div>
+                <div class="flex flex-col w-full text-sm">
+                    {
+                    Object.entries(links).map(([_, {pageLink}]) => (
+                        <li class="flex text-typography-main hover:text-action-accent border-0 lg:border-l lg:border-edge pl-4 py-1 lg:hover:border-action-accent lg:hover:border-l-2">
+                            <a href={pageLink.href}>{t(lang, `docs.sidebar.${title.toLowerCase()}.${pageLink.label.toLowerCase()}.label`)}</a>
+                        </li>
+                    ))
+                    }
+                </div>
+                </>
+            ))
+            }
+        </ul>
+    </div>
+</>
+<script>
+  function highlightSidebarItem() {
+    const sidebar = document.querySelector('div[role="navigation"]')
+    const sidebarLinks = sidebar?.querySelectorAll('a')
+    const currentPath = window.location.pathname
+    
+    sidebarLinks?.forEach(link => {
+      const li = link.parentElement
+      link.classList.remove('text-action-accent', 'font-semibold')
+      li?.classList.remove('border-action-accent', 'lg:border-l-2', 'border-action-accent', 'border-edge')
+      if (link.getAttribute('href') === currentPath) {
+        link.classList.add('text-action-accent', 'font-semibold')
+        li?.classList.add('border-action-accent', 'lg:border-l-2', 'border-action-accent')
+      }
+    })
+  }
+
+  document.addEventListener('astro:page-load', () => {
+     highlightSidebarItem()
+    })
+</script>

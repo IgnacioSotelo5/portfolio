@@ -1,31 +1,40 @@
 ---
 import { t } from '@/i18n';
 import { useLocale } from '@/i18n/context';
+import ChevronRight from '~/icons/chevron-right.ts';
 
 export interface Props {
   headings: { href: string; label: string }[];
 }
+
 
 const { headings } = Astro.props;
 const lang = useLocale(Astro);
 ---
 
 {headings.length > 0 && (
-  <div id="internal-nav">
-    <h2 class="text-sm font-semibold tracking-wider mb-4 text-typography-main">{t(lang, 'tableOfContents.onThisPage')}</h2>
-    <ul class="flex flex-col gap-2 text-sm border-l-2 border-edge">
-      {headings.map(({ href, label }) => (
-        <li id={`section-link-${href.replace('#', '')}`} class="pl-4">
-          <a 
-            href={href} 
-            class="text-typography-main hover:text-typography-secondary transition-colors duration-200"
-          >
-            {label}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </div>
+  <>
+    <button class="lg:hidden flex gap-x-2 items-center text-xs font-semibold tracking-wider sticky right-4 top-4">
+      <span>{t(lang, 'tableOfContents.onThisPage')}</span>
+      <ChevronRight size={16} />
+    </button>
+    <div class="hidden lg:block w-fit sticky top-28 px-6 py-3" id="internal-nav">
+      <h2 class="hidden lg:block text-sm font-semibold tracking-wider mb-4 text-typography-main">{t(lang, 'tableOfContents.onThisPage')}</h2>
+      <ul class="flex flex-col gap-2 text-sm border-l-2 border-edge">
+        
+        {headings.map(({ href, label }) => (
+          <li id={`section-link-${href.replace('#', '')}`} class="pl-4">
+            <a 
+              href={href} 
+              class="text-typography-main hover:text-typography-secondary transition-colors duration-200"
+            >
+              {label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </>
 )}
 
 <script>

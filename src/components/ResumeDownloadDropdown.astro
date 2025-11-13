@@ -28,10 +28,17 @@ const lang = useLocale(Astro)
 </div>
 
 <script>
-    const cvDropdown = document.querySelector('[data-cv-dropdown]')
-    const downloadCV = document.querySelector('[data-action="downloadCV"]')
 
-    downloadCV?.addEventListener('click', () => {
-        cvDropdown?.classList.toggle('hidden')
+    function initResumeDownloadDropdown() {
+        const cvDropdown = document.querySelector('[data-cv-dropdown]')
+        const downloadCV = document.querySelector('[data-action="downloadCV"]')
+
+        downloadCV?.addEventListener('click', () => {
+            cvDropdown?.classList.toggle('hidden')
+        })
+    }
+
+    document.addEventListener('astro:page-load', () => {
+        initResumeDownloadDropdown()
     })
 </script>

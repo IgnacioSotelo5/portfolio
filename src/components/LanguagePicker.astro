@@ -51,10 +51,17 @@ const availableLangs = {
 </div>
 
 <script>
-    const langDropdown = document.querySelector('[data-lang-dropdown]')
-    const changeLanguage = document.querySelector('#changeLanguage')
 
-    changeLanguage?.addEventListener('click', () => {
-        langDropdown?.classList.toggle('hidden')
+    function initLanguagePicker() {
+        const langDropdown = document.querySelector('[data-lang-dropdown]')
+        const changeLanguage = document.querySelector('#changeLanguage')
+
+        changeLanguage?.addEventListener('click', () => {
+            langDropdown?.classList.toggle('hidden')
+        })
+    }
+
+    document.addEventListener('astro:page-load', () => {
+        initLanguagePicker()
     })
 </script>

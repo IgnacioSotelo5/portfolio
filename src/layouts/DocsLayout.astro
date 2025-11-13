@@ -1,126 +1,27 @@
 ---
-import { useLocale } from "@/i18n/context";
 import Layout from "./Layout.astro";
-import { t } from "@/i18n";
-
-type SidebarLink = {
-  pageLink: { href: string, label: string }
-}
-
-const lang = useLocale(Astro)
-
-const baseURI = '/docs'
-const resolvedLangURI = lang === 'en' ? baseURI : `/${lang}${baseURI}`
-
-const sidebarLinks: Record<string, { title: string, links: Record<string, SidebarLink> }> = {
-  overview: {
-    title: 'Overview',
-    links: {
-      introduction: {
-        pageLink: { href: `${resolvedLangURI}/introduction`, label: 'Introduction' }
-      }
-    },
-  },
-  work: {
-    title: 'Work',
-    links: {
-      projects: {
-        pageLink: { href: `${resolvedLangURI}/projects`, label: 'Projects' }
-      }
-    }
-  },
-  background: {
-    title: 'Background',
-    links: {
-      education: {
-        pageLink: { href: `${resolvedLangURI}/education`, label: 'Education' }
-      },
-      skills: {
-        pageLink: { href: `${resolvedLangURI}/skills`, label: 'Skills' }
-      }
-    }
-  },
-  resources: {
-    title: 'Resources',
-    links: {
-      changelog: {
-        pageLink: { href: `${resolvedLangURI}/changelog`, label: 'Changelog' }
-      }
-    }
-  },
-  connect: {
-    title: 'Connect',
-    links: {
-      contact: {
-        pageLink: { href: `${resolvedLangURI}/contact`, label: 'Contact' }
-      }
-    }
-  }
-}
-
+import Sidebar from "@/components/Sidebar.astro";
 
 const isProjectsPage = Astro.url.pathname.includes('projects')
 
 ---
 <Layout context="docs">
-    <div class="mt-16 min-h-dvh w-full absolute grid grid-cols-[16rem_2.5rem_minmax(0,1fr)]">
-        <div class="col-start-1 h-full border-r border-edge bg-surface/50 overflow-y-hidden">
-            <div role="navigation" class="flex flex-col fixed gap-2 p-4 items-center py-6 px-8">
-                <ul class="flex flex-col gap-2">
-                  {
-                    Object.entries(sidebarLinks).map(([_, {links, title}]) => (
-                      <>
-                      <div class="font-semibold text-sm tracking-wider">{t(lang, `docs.sidebar.${title.toLowerCase()}.title`)}</div>
-                      <div class="flex flex-col w-full text-sm">
-                          {
-                            Object.entries(links).map(([_, {pageLink}]) => (
-                              <li class="flex text-typography-main hover:text-action-accent border-l border-edge pl-4 py-1 hover:border-action-accent hover:border-l-2">
-                                <a href={pageLink.href}>{t(lang, `docs.sidebar.${title.toLowerCase()}.${pageLink.label.toLowerCase()}.label`)}</a>
-                              </li>
-                            ))
-                          }
-                      </div>
-                      </>
-                    ))
-                  }
-                </ul>
-            </div>
+    <div class="flex flex-col mt-16 min-h-dvh w-full absolute md:grid md:grid-cols-[16rem_2.5rem_minmax(0,1fr)]">
+        <div class="lg:col-start-1 h-full border-r border-edge bg-surface/50 overflow-y-hidden">
+            <Sidebar />
         </div>
-        <div class="col-start-2 bg-surface-elevated"></div>
-        <div transition:name="docsContent" class="flex col-start-3 p-10">
-          <div class={`overflow-y-auto flex-1 ${!isProjectsPage ? 'pl-40' : 'px-8'}`}>
-            <slot />
-          </div>
+        <div class="hidden lg:block lg:col-start-2 bg-surface-elevated"></div>
+        <div transition:name="docsContent" class="flex flex-col lg:col-start-3 lg:p-8 xl:p-10 lg:flex-row-reverse">
           {
             Astro.slots.toc && (
-              <div class="w-64">
-                <div class="sticky top-28">
-                  <slot name="toc" />
-                </div>
+              <div class="lg:block flex justify-end sticky top-16 left-0 right-0 bg-surface-card py-4 px-2 h-fit lg:h-[inherit] lg:bg-transparent lg:w-fit lg:px-3 xl:w-64">
+                <slot name="toc" />
               </div>
             )
           }
+          <div class={`overflow-y-auto flex-1 ${!isProjectsPage ? 'xl:pl-40' : 'xl:px-8'}`}>
+            <slot />
+          </div>
         </div>
     </div>
 </Layout>
-<script>
-  function highlightSidebarItem() {
-    const sidebar = document.querySelector('div[role="navigation"]')
-    const sidebarLinks = sidebar?.querySelectorAll('a')
-    const currentPath = window.location.pathname
-    
-    sidebarLinks?.forEach(link => {
-      const li = link.parentElement
-      link.classList.remove('text-action-accent', 'font-semibold')
-      li?.classList.remove('border-action-accent', 'border-l-2', 'border-action-accent', 'border-edge')
-      if (link.getAttribute('href') === currentPath) {
-        link.classList.add('text-action-accent', 'font-semibold')
-        li?.classList.add('border-action-accent', 'border-l-2', 'border-action-accent')
-      }
-    })
-  }
-
-  document.addEventListener('astro:page-load', () => {
-     highlightSidebarItem()
-    })
-</script>
