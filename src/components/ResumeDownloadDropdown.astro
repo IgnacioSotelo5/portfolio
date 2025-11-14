@@ -15,7 +15,7 @@ const lang = useLocale(Astro)
         </span>
         <ChevronDown size={16} />
     </button>
-    <div data-cv-dropdown class="hidden relative top-2 w-fit lg:absolute z-10 lg:top-[calc(4rem_/_2_+_20px)] bg-surface-card border border-edge px-3 py-2 rounded-md group-hover:flex  flex-col gap-y-1 text-sm font-semibold">
+    <div data-cv-dropdown class="hidden relative top-2 w-fit md:absolute z-10 md:top-[calc(4rem_/_2_+_20px)] bg-surface-card border border-edge px-3 py-2 rounded-md group-hover:flex  flex-col gap-y-1 text-sm font-semibold">
         <a class="flex items-center gap-x-1 w-full hover:bg-surface-elevated px-2 py-1 rounded-sm" href="/CV_Ignacio_Sotelo_ES.pdf" download>
                 <span>ES</span>
                 <img class="size-5" src="/flags/es.svg" alt="">
@@ -28,14 +28,22 @@ const lang = useLocale(Astro)
 </div>
 
 <script>
+    let resumeClickHandler: (() => void) | null = null;
 
     function initResumeDownloadDropdown() {
         const cvDropdown = document.querySelector('[data-cv-dropdown]')
         const downloadCV = document.querySelector('[data-action="downloadCV"]')
 
-        downloadCV?.addEventListener('click', () => {
+        if (resumeClickHandler && downloadCV) {
+            downloadCV.removeEventListener('click', resumeClickHandler);
+            resumeClickHandler = null;
+        }
+
+        resumeClickHandler = () => {
             cvDropdown?.classList.toggle('hidden')
-        })
+        }
+
+        downloadCV?.addEventListener('click', resumeClickHandler)
     }
 
     document.addEventListener('astro:page-load', () => {

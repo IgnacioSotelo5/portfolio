@@ -25,7 +25,7 @@ const availableLangs = {
         <Languages size={20} />
         <ChevronDown size={16} />
     </button>
-    <div data-lang-dropdown class="group relative w-fit top-2 lg:absolute lg:top-[calc(4rem_/_2_+_20px)] bg-surface-card border border-edge px-3 py-2 rounded-md group-hover:flex flex-col hidden gap-y-1 text-sm">
+    <div data-lang-dropdown class="group relative w-fit top-2 md:absolute md:top-[calc(4rem_/_2_+_20px)] bg-surface-card border border-edge px-3 py-2 rounded-md group-hover:flex flex-col hidden gap-y-1 text-sm">
         {
             Object.entries(availableLangs).sort(([keyA], [keyB]) => {
                 if(keyA === lang) return -1
@@ -51,14 +51,22 @@ const availableLangs = {
 </div>
 
 <script>
+    let languageClickHandler: (() => void) | null = null;
 
     function initLanguagePicker() {
         const langDropdown = document.querySelector('[data-lang-dropdown]')
         const changeLanguage = document.querySelector('#changeLanguage')
 
-        changeLanguage?.addEventListener('click', () => {
+        if (languageClickHandler && changeLanguage) {
+            changeLanguage.removeEventListener('click', languageClickHandler);
+            languageClickHandler = null;
+        }
+
+        languageClickHandler = () => {
             langDropdown?.classList.toggle('hidden')
-        })
+        }
+
+        changeLanguage?.addEventListener('click', languageClickHandler)
     }
 
     document.addEventListener('astro:page-load', () => {

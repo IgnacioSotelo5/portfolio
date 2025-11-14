@@ -2,7 +2,7 @@
 import { t } from "@/i18n";
 import { useLocale } from "@/i18n/context";
 import ChartNoAxesColumnDecreasing from '~/icons/chart-no-axes-column-decreasing';
-
+import X from '~/icons/x'
 
 type SidebarLink = {
     pageLink: { href: string, label: string }
@@ -58,16 +58,20 @@ const sidebarLinks: Record<string, { title: string, links: Record<string, Sideba
     }
   }
 }
+
 ---
 <>
-    <button class="lg:hidden flex gap-x-2 items-center text-xs font-semibold tracking-wider fixed top-20 left-4 z-50">
+    <button aria-label="toggle-menu" class='lg:hidden flex gap-x-2 items-center text-xs font-semibold tracking-wider fixed top-20 left-4 z-40 py-2'>
         <ChartNoAxesColumnDecreasing size={16} class="rotate-90" />
         <span>
             Menu
         </span>
     </button>
-    <div role="navigation" class="hidden flex-col items-start fixed h-dvh w-3/4 overflow-y-scroll top-0 bg-surface-card z-50 gap-2 px-8 py-6 lg:flex lg:max-w-64 lg:overflow-auto lg:bg-transparent lg:top-16 lg:border-edge">
-        <ul class="flex flex-col gap-2">
+    <div role="navigation" class="flex-col items-start fixed h-dvh w-3/4 md:w-1/2 overflow-y-scroll top-0 bg-surface-card z-50 gap-2 px-8 py-6 lg:flex lg:max-w-64 lg:overflow-auto lg:bg-transparent lg:top-16 lg:border-edge lg:translate-none -translate-x-full  transition-transform duration-300 ease-in-out">
+      <button aria-label="close-menu" class="absolute top-4 right-4 lg:hidden flex gap-x-2 items-center text-xs font-semibold tracking-wider z-50">
+        <X size={16} />
+      </button>        
+      <ul class="flex flex-col gap-2 pt-4 lg:pt-0">
             {
             Object.entries(sidebarLinks).map(([_, {links, title}]) => (
                 <>
@@ -86,8 +90,13 @@ const sidebarLinks: Record<string, { title: string, links: Record<string, Sideba
             }
         </ul>
     </div>
+    <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black opacity-50 z-40 transition-opacity duration-300 lg:hidden"></div>
+
 </>
 <script>
+  let pageLoadHandler: (() => void) | null = null
+  let clickHandler: ((e: Event) => void) | null = null
+
   function highlightSidebarItem() {
     const sidebar = document.querySelector('div[role="navigation"]')
     const sidebarLinks = sidebar?.querySelectorAll('a')
@@ -104,7 +113,67 @@ const sidebarLinks: Record<string, { title: string, links: Record<string, Sideba
     })
   }
 
-  document.addEventListener('astro:page-load', () => {
-     highlightSidebarItem()
-    })
+  function handleMobileMenuToggle() {
+    const sidebar = document.querySelector('div[role="navigation"]')
+    const overlay = document.querySelector('#sidebar-overlay')
+    if (sidebar?.classList.contains('-translate-x-full')) {
+      sidebar?.classList.remove('-translate-x-full')
+      sidebar?.classList.add('flex', 'translate-x-0')
+      overlay?.classList.remove('hidden')
+    } else {
+      sidebar?.classList.remove('flex', 'translate-x-0')
+      sidebar?.classList.add('-translate-x-full')
+      overlay?.classList.add('hidden')
+    }
+  }
+  
+  function setupEventListeners() {
+    if (pageLoadHandler) {
+      document.removeEventListener('astro:page-load', pageLoadHandler)
+    }
+    if (clickHandler) {
+      document.removeEventListener('click', clickHandler)
+    }
+    
+    pageLoadHandler = () => {
+      highlightSidebarItem()
+    }
+    
+    clickHandler = (e: Event) => {
+      const target = e.target as HTMLElement
+      const sidebar = document.querySelector('div[role="navigation"]')
+      const toggleButton = document.querySelector('button[aria-label="toggle-menu"]')
+      const closeMenuButton = document.querySelector('button[aria-label="close-menu"]')
+      const overlay = document.querySelector('#sidebar-overlay')
+      
+      if (toggleButton?.contains(target) ||
+          closeMenuButton?.contains(target) ||
+          overlay?.contains(target)) {
+        handleMobileMenuToggle()
+        return
+      }
+      
+      if (target.matches('div[role="navigation"] a')) {
+        handleMobileMenuToggle()
+        return
+      }
+      
+      if (!sidebar?.classList.contains('-translate-x-full') && 
+          !toggleButton?.contains(target) &&
+          !overlay?.contains(target) && 
+          !sidebar?.contains(target)) {
+        sidebar?.classList.remove('translate-x-0')
+        sidebar?.classList.add('-translate-x-full')
+        overlay?.classList.add('hidden')
+      }
+    }
+    
+    document.addEventListener('astro:page-load', pageLoadHandler)
+    document.addEventListener('click', clickHandler)
+    
+    highlightSidebarItem()
+  }
+  
+  setupEventListeners()
+
 </script>

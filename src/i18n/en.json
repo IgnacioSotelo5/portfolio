@@ -63,7 +63,8 @@
         }
     }, 
     "tableOfContents": {
-        "onThisPage": "On this page"
+        "onThisPage": "On this page",
+        "returnToTop": "Return to top"
     },
     "cardProject": {
         "ctaButton": "View Project"

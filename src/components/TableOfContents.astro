@@ -14,16 +14,18 @@ const lang = useLocale(Astro);
 
 {headings.length > 0 && (
   <>
-    <button class="lg:hidden flex gap-x-2 items-center text-xs font-semibold tracking-wider sticky right-4 top-4">
+    <button aria-label="open-table-of-contents" class="lg:hidden flex gap-x-2 items-center text-xs font-semibold tracking-wider sticky right-4 top-4">
       <span>{t(lang, 'tableOfContents.onThisPage')}</span>
       <ChevronRight size={16} />
     </button>
-    <div class="hidden lg:block w-fit sticky top-28 px-6 py-3" id="internal-nav">
+    <div class="hidden w-[calc(100%-2rem)] pb-2 absolute top-16 rounded-md bg-surface-elevated gap-y-4 overflow-y-scroll lg:bg-transparent lg:overflow-y-auto lg:block lg:sticky lg:top-28" id="internal-nav">
       <h2 class="hidden lg:block text-sm font-semibold tracking-wider mb-4 text-typography-main">{t(lang, 'tableOfContents.onThisPage')}</h2>
-      <ul class="flex flex-col gap-2 text-sm border-l-2 border-edge">
-        
+      <ul class="flex flex-col gap-2 text-sm lg:border-l-2 lg:border-edge">
+        <li class="lg:hidden border-b border-edge p-4">
+          <a id="return-to-top" href="#" class="text-action-secondary font-semibold duration-200">{t(lang, 'tableOfContents.returnToTop')}</a>
+        </li>
         {headings.map(({ href, label }) => (
-          <li id={`section-link-${href.replace('#', '')}`} class="pl-4">
+          <li id={`section-link-${href.replace('#', '')}`} class="py-3 px-6 active:bg-surface-card rounded-sm lg:active:bg-transparent lg:pl-4 lg:px-2 lg:py-1">
             <a 
               href={href} 
               class="text-typography-main hover:text-typography-secondary transition-colors duration-200"
@@ -40,6 +42,9 @@ const lang = useLocale(Astro);
 <script>
 const intersectingEntries = new Map<string, number>()
 let headingOrder: string[] = []
+let observer: IntersectionObserver | null = null
+let pageLoadHandler: (() => void) | null = null
+let clickHandler: ((e: Event) => void) | null = null
 
 const callback: IntersectionObserverCallback = (entries) => {
   entries.forEach((entry) => {
@@ -52,7 +57,7 @@ const callback: IntersectionObserverCallback = (entries) => {
       intersectingEntries.delete(targetId)
     }
     
-    document.querySelectorAll('#internal-nav a').forEach(link => {
+    document.querySelectorAll('#internal-nav a:not(#return-to-top)').forEach(link => {
       link.classList.remove('text-action-accent')
       link.classList.add('text-typography-main')
     })
@@ -98,20 +103,85 @@ const callback: IntersectionObserverCallback = (entries) => {
   })
 
 }
-const options: IntersectionObserverInit = {
-  threshold: 0.25,
-  rootMargin: '-64px 0px -80% 0px'
+
+function handleMobileMenuToggle() {
+  const internalNav = document.querySelector('#internal-nav')
+  const buttonIcon = document.querySelector('button[aria-label="open-table-of-contents"] > svg')
+  if(internalNav?.classList.contains('hidden')) {
+    internalNav.classList.remove('hidden') 
+    buttonIcon?.classList.add('rotate-90')
+  } else {
+    internalNav?.classList.add('hidden')
+    buttonIcon?.classList.remove('rotate-90')
+  }
 }
 
-const observer = new IntersectionObserver(callback, options)
-
-document.addEventListener('astro:page-load', () => {
+function initTableOfContents() {
+  if (observer) {
+    observer.disconnect()
+    observer = null
+  }
+  
+  intersectingEntries.clear()
+  
   const headings = document.querySelectorAll('h2[id]')
   headingOrder = Array.from(headings).map(h => h.id)
   
-  headings.forEach((heading) => {
-    observer.observe(heading)
-  })
-})
+  if (headings.length > 0) {
+    const options: IntersectionObserverInit = {
+      threshold: 0.25,
+      rootMargin: '-64px 0px -80% 0px'
+    }
+    
+    observer = new IntersectionObserver(callback, options)
+    
+    headings.forEach((heading) => {
+      observer!.observe(heading)
+    })
+  }
+}
+
+function setupEventListeners() {
+  if (pageLoadHandler) {
+    document.removeEventListener('astro:page-load', pageLoadHandler)
+  }
+  if (clickHandler) {
+    document.removeEventListener('click', clickHandler)
+  }
+  
+  pageLoadHandler = () => {
+    initTableOfContents()
+  }
+  
+  clickHandler = (e: Event) => {
+    const target = e.target as HTMLElement
+    const internalNav = document.querySelector('#internal-nav')
+    const button = document.querySelector('button[aria-label="open-table-of-contents"]')
+    
+    if (target.matches('button[aria-label="open-table-of-contents"]') ||
+        target.closest('button[aria-label="open-table-of-contents"]')) {
+      handleMobileMenuToggle()
+      return
+    }
+    
+    if (target.matches('#internal-nav a')) {
+      handleMobileMenuToggle()
+      return
+    }
+    
+    if (!internalNav?.classList.contains('hidden') && 
+        !button?.contains(target) && 
+        !internalNav?.contains(target)) {
+      internalNav?.classList.add('hidden')
+    }
+  }
+  
+  document.addEventListener('astro:page-load', pageLoadHandler)
+  document.addEventListener('click', clickHandler)
+  
+  initTableOfContents()
+}
+
+setupEventListeners()
 
 </script>

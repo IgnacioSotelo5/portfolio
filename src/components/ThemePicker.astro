@@ -25,9 +25,17 @@ const lang = useLocale(Astro)
 <script>
     import { applyTheme } from "@/scripts/theme";
 
+    let themeClickHandler: ((e: Event) => void) | null = null;
+
     const attachPickers = () => {
         const themePicker = document.getElementById('themePicker');
         if(!themePicker) return
+        
+        if (themeClickHandler) {
+            themePicker.removeEventListener('click', themeClickHandler);
+            themeClickHandler = null;
+        }
+        
         const userPref = localStorage.getItem('theme-preference') || 'system'
         const allPickers = themePicker.querySelectorAll('[data-theme]')
         allPickers.forEach(picker => {
@@ -38,7 +46,7 @@ const lang = useLocale(Astro)
             }
         })
         
-        themePicker.addEventListener('click', (e) => {
+        themeClickHandler = (e: Event) => {
             const picker = (e.target as HTMLElement)?.closest?.('[data-theme]') as HTMLElement | null
             if(!picker) return
 
@@ -51,7 +59,9 @@ const lang = useLocale(Astro)
             picker.setAttribute('aria-selected', 'true')
 
             applyTheme(theme)
-        })
+        }
+        
+        themePicker.addEventListener('click', themeClickHandler)
     }
 
 	attachPickers()

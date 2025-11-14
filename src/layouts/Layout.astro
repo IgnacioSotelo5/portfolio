@@ -36,10 +36,11 @@ const lang = useLocale(Astro)
 			applyTheme(userPref || 'system')
 			
 			// Asegurar que el tema se aplica en transiciones, porque ClientRouter reemplaza el HTML antes de aplicar las clases.
-			document.addEventListener('astro:before-swap', (ev) => {
+			const themeHandler = (ev: any) => {
 				const theme = localStorage.getItem('theme-preference') || 'system'
 				applyTheme(theme, ev.newDocument.body)
-			})
+			}
+			document.addEventListener('astro:before-swap', themeHandler)
 
 			
 		</script>

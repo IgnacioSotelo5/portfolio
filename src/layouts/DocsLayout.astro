@@ -6,20 +6,22 @@ const isProjectsPage = Astro.url.pathname.includes('projects')
 
 ---
 <Layout context="docs">
-    <div class="flex flex-col mt-16 min-h-dvh w-full absolute md:grid md:grid-cols-[16rem_2.5rem_minmax(0,1fr)]">
+    <div class="flex flex-col mt-16 min-h-dvh w-full absolute lg:grid lg:grid-cols-[16rem_2.5rem_minmax(0,1fr)]">
         <div class="lg:col-start-1 h-full border-r border-edge bg-surface/50 overflow-y-hidden">
             <Sidebar />
         </div>
         <div class="hidden lg:block lg:col-start-2 bg-surface-elevated"></div>
         <div transition:name="docsContent" class="flex flex-col lg:col-start-3 lg:p-8 xl:p-10 lg:flex-row-reverse">
+          <div class={`${Astro.slots.toc === undefined ? 'lg:hidden' : 'lg:block'} z-30 flex justify-end sticky top-16 left-0 right-0 bg-surface-card py-6 px-2 h-fit lg:h-[inherit] lg:bg-transparent lg:w-fit lg:px-3 xl:w-64`}>
           {
-            Astro.slots.toc && (
-              <div class="lg:block flex justify-end sticky top-16 left-0 right-0 bg-surface-card py-4 px-2 h-fit lg:h-[inherit] lg:bg-transparent lg:w-fit lg:px-3 xl:w-64">
+            Astro.slots.toc ? (
                 <slot name="toc" />
-              </div>
-            )
+              ) : (
+                <div class="h-4"></div>
+              )
           }
-          <div class={`overflow-y-auto flex-1 ${!isProjectsPage ? 'xl:pl-40' : 'xl:px-8'}`}>
+          </div>
+          <div class={`overflow-y-auto flex-1 py-8 px-4 lg:px-0 lg:py-0 ${!isProjectsPage ? 'xl:pl-40' : 'xl:px-8'}`}>
             <slot />
           </div>
         </div>

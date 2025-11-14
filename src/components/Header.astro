@@ -32,6 +32,9 @@ const lang = useLocale(Astro);
 
 <script>
 	let menuOpen = false;
+	let menuButtonHandler: (() => void) | null = null;
+	let closeButtonHandler: (() => void) | null = null;
+	let keydownHandler: ((e: KeyboardEvent) => void) | null = null;
 
 	function toggleMenu(open?: boolean) {
 		const menuButton = document.querySelector('#menu-button');
@@ -63,12 +66,25 @@ const lang = useLocale(Astro);
 		const menuButton = document.querySelector('#menu-button');
 		const closeButton = document.querySelector('#close-button');
 
-		menuButton?.addEventListener('click', () => toggleMenu(true));
-		closeButton?.addEventListener('click', () => toggleMenu(false));
-		
-		window.addEventListener('keydown', (e) => {
+		if (menuButtonHandler && menuButton) {
+			menuButton.removeEventListener('click', menuButtonHandler);
+		}
+		if (closeButtonHandler && closeButton) {
+			closeButton.removeEventListener('click', closeButtonHandler);
+		}
+		if (keydownHandler) {
+			window.removeEventListener('keydown', keydownHandler);
+		}
+
+		menuButtonHandler = () => toggleMenu(true);
+		closeButtonHandler = () => toggleMenu(false);
+		keydownHandler = (e: KeyboardEvent) => {
 			if (e.key === 'Escape' && menuOpen) toggleMenu(false);
-		});
+		};
+
+		menuButton?.addEventListener('click', menuButtonHandler);
+		closeButton?.addEventListener('click', closeButtonHandler);
+		window.addEventListener('keydown', keydownHandler);
 	}
 
 	document.addEventListener('astro:page-load', () => {

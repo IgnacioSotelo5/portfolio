@@ -59,7 +59,8 @@
         }
     },
     "tableOfContents": {
-        "onThisPage": "En esta página"
+        "onThisPage": "En esta página",
+        "returnToTop": "Volver arriba"
     }, 
     "cardProject": {
         "ctaButton": "Ver Proyecto"
